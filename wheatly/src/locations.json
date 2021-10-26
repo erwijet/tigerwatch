@@ -1,11 +1,5 @@
 [
     {
-        "name": "The Corner Store",
-        "regex": "The\\sCorner\\sStore.*",
-        "icon": "shopping-basket",
-        "category": ""
-    },
-    {
         "name": "Midnight Oil",
         "regex": "Midnight\\sOil\\s.*",
         "icon": "coffee",
