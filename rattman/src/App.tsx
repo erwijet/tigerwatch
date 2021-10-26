@@ -1,25 +1,39 @@
 import './App.css';
 import { useState } from 'react';
-import ReactDOM from 'react-dom';
-import Button from '@mui/material/Button';
+import { alertTitleClasses, Button } from '@mui/material';
 import io from 'socket.io-client';
+import useStickyState from './useStickyState';
+import TigerwatchAppBar from './components/TigerwatchAppBar';
 
 function App() {
-  const [ skey, setSkey ] = useState(null);
-  let token = '';
+  // eslint-disable-next-line
+  const [ skey, setSkey ] = useStickyState<string>('', 'skey');
+  const [ spendingData, setSpendingData ] = useState([]);
+  
+  async function syncSpendingData() {
+      const res = await fetch(`https://vps.erwijet.com/data/${skey}`);
+      if (res.status === 401) {
+        const socket = io('https://vps.erwijet.com');
 
-  async function fetchSpendingData(): Promise<string> {
-    const res = await fetch(`https://tigerspend.rit.edu/statementdetail.php?cid=105&skey=${skey}format=csv&startdate=2021-04-01&enddate=2021-10-30&acct=4`);
-    return ''; 
-  }
+        socket.on('message', (msg) => {
+          window.open('https://vps.erwijet.com/' + msg);
+        });
 
-  function launchShib(): void {
-    window.open('https://tigerspend-shib.herokuapp.com/' + token);
+        socket.on('skey', async ({ skey }) => {
+          setSkey(skey);
+          alert(skey);
+          syncSpendingData();
+        });
+      } else {
+        setSpendingData(await res.json());
+      }
   }
   
   return (
     <div className="App">
-      <Button variant="contained" onClick={fetchSpendingData}>{process.env.REACT_APP_TEST}</Button> 
+        <TigerwatchAppBar />
+        <Button variant="outlined" onClick={syncSpendingData}>Sync Spending Data</Button>
+        <p>{ JSON.stringify(spendingData) }</p>
     </div>
   );
 }
