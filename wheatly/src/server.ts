@@ -1,9 +1,11 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import http from 'http';
+import https from 'https';
+import fs from 'fs';
 import { config } from 'dotenv';
 import { Socket, Server as SIOServer } from 'socket.io';
+
 
 import handleDataFetch from './handleDataFetch';
 
@@ -57,8 +59,13 @@ setInterval(() => {
     }
 }, 1 * 1000);
 
-const httpServer = http.createServer(app);
-const io = new SIOServer(httpServer, {
+const httpsServer = https.createServer({
+	key: fs.readFileSync('/etc/letsencrypt/live/vps.erwijet.com/privkey.pem'),
+	cert: fs.readFileSync('/etc/letsencrypt/live/vps.erwijet.com/cert.pem'),
+	ca: fs.readFileSync('/etc/letsencrypt/live/vps.erwijet.com/chain.pem')
+}, app);
+
+const io = new SIOServer(httpsServer, {
     cors: {
         origin: '*',
     },
@@ -114,4 +121,4 @@ app.get('/:token', (req, res) => {
 });
 
 const PORT = process.env.PORT || 2020;
-httpServer.listen(PORT, () => console.log('listening on ' + PORT));
+httpsServer.listen(PORT, () => console.log('listening on ' + PORT));
