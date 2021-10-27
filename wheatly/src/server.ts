@@ -2,10 +2,10 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import https from 'https';
+
 import fs from 'fs';
 import { config } from 'dotenv';
 import { Socket, Server as SIOServer } from 'socket.io';
-
 
 import handleDataFetch from './handleDataFetch';
 
@@ -106,7 +106,8 @@ app.get('/callback', (req, res) => {
 
     connections[token].socket.emit('skey', { skey });
     deleteRecordByToken(token);
-    res.end("You're all set! You can now close this page.");
+    res.setHeader('content-type', 'text/html');
+    res.end("<script>window.close();</script><p>You're all set! You can now close this page.</p>");
 });
 
 app.get('/:token', (req, res) => {
