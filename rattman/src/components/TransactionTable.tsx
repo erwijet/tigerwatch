@@ -24,7 +24,7 @@ export default function DenseTable(props: { data: Transaction[] }): JSX.Element 
         <TableBody>
           {props.data.map((row) => (
             <TableRow
-              key={row.date}
+              key={row.date.getTime().toString()}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
