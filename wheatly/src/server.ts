@@ -9,6 +9,7 @@ import { config } from 'dotenv';
 
 import tigerspendRequestHandler from './tigerspend';
 import { connections, validateToken, deleteRecordByToken } from './tokens';
+import useSocketIO from './socket';
 
 const app = express();
 app.use(cors(), morgan('common'), express.static(__dirname + '/../public'));
@@ -25,6 +26,7 @@ const httpsServer = https.createServer(
 );
 
 config();
+useSocketIO(httpsServer);
 
 /**
  * test.html is a test enviornment which allows for manual interaction with the server
