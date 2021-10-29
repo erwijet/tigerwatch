@@ -119,7 +119,7 @@ app.get('/callback', (req, res) => {
 });
 
 app.get('/up', (req, res) =>
-    res.sendFile(path.resolve(__dirname + '/../public/server_meme.png'))
+    res.sendFile(path.resolve(__dirname + '/../public/img/server_meme.jpg'))
 );
 
 app.get('/:token', (req, res) => {
