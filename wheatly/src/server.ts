@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import https from 'https';
+import path from 'path';
 
 import fs from 'fs';
 import { config } from 'dotenv';
@@ -118,7 +119,7 @@ app.get('/callback', (req, res) => {
 });
 
 app.get('/up', (req, res) =>
-    res.sendFile(__dirname + '/../public/server_meme.png')
+    res.sendFile(path.resolve(__dirname + '/../public/server_meme.png'))
 );
 
 app.get('/:token', (req, res) => {
