@@ -117,7 +117,9 @@ app.get('/callback', (req, res) => {
     );
 });
 
-app.get('/up', (req, res) => res.sendFile(__dirname + '/../public/server_meme.png'));
+app.get('/up', (req, res) =>
+    res.sendFile(__dirname + '/../public/server_meme.png')
+);
 
 app.get('/:token', (req, res) => {
     const token = req.params.token;
@@ -126,8 +128,9 @@ app.get('/:token', (req, res) => {
     return res.redirect(
         `https://tigerspend.rit.edu/login.php?cid=105&wason=https://${req.get(
             'host'
-       )}/callback?token=${token}`
+        )}/callback?token=${token}`
     );
+});
 
 const PORT = process.env.PORT || 2020;
 httpsServer.listen(PORT, () => console.log('listening on ' + PORT));
