@@ -9,6 +9,7 @@ import { config } from 'dotenv';
 
 import tigerspendRequestHandler from './tigerspend';
 import { connections, validateToken, deleteRecordByToken } from './tokens';
+import useSocketIO from './socket';
 
 const app = express();
 app.use(cors(), morgan('common'), express.static(__dirname + '/../public'));
@@ -25,6 +26,7 @@ const httpsServer = https.createServer(
 );
 
 config();
+useSocketIO(httpsServer);
 
 /**
  * test.html is a test enviornment which allows for manual interaction with the server
@@ -70,7 +72,7 @@ app.get('/up', (req, res) =>
 );
 
 /**
- * Accepts a token and will redirect the caller to the tigerspend SAML shib page,
+ * Accepts a token and redirects the invoker to the tigerspend SAML shib page,
  * but the redirect will be pointed to our callback route for handling once finished
  */
 app.get('/:token', (req, res) => {
