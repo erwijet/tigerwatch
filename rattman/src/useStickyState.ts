@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function useStickyState<T>(
     defaultValue: T,
@@ -14,5 +14,11 @@ export default function useStickyState<T>(
         window.localStorage.setItem(key, JSON.stringify(val));
     }, [key, val]);
 
-    return [val, setVal];
+    return [
+        val,
+        (v: React.SetStateAction<T>): void => {
+            window.localStorage.setItem(key, JSON.stringify(v));
+            setVal(v);
+        },
+    ];
 }

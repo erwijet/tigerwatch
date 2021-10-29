@@ -4,6 +4,8 @@ import { alertTitleClasses, Button } from '@mui/material';
 import io from 'socket.io-client';
 import useStickyState from './useStickyState';
 import TigerwatchAppBar from './components/TigerwatchAppBar';
+import TransactionTable from './components/TransactionTable';
+import { setServers } from 'dns';
 
 function App() {
   // eslint-disable-next-line
@@ -23,11 +25,7 @@ function App() {
 
         socket.on('skey', async ({ skey: newSkey }) => {
           socket.disconnect(); // should disconnect from server, but we ensure it is disconnected here (WS uses a lot of battery)
-          
-          while (skey != newSkey) {
-            console.log({skey, newSkey});
-            setSkey(newSkey);
-          }
+          setSkey(newSkey);
 
           resolve();
         });
@@ -49,7 +47,7 @@ function App() {
     <div className="App">
         <TigerwatchAppBar />
         <Button variant="outlined" onClick={syncSpendingData}>Sync Spending Data</Button>
-        <p>{ JSON.stringify(spendingData) }</p>
+        <TransactionTable data={spendingData} />
     </div>
   );
 }

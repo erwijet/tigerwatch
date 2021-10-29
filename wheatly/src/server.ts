@@ -10,7 +10,7 @@ import { Socket, Server as SIOServer } from 'socket.io';
 import handleDataFetch from './handleDataFetch';
 
 const app = express();
-app.use(cors(), morgan('common'), express.static(__dirname + '/../'));
+app.use(cors(), morgan('common'), express.static(__dirname + '/../public'));
 
 type Connection = {
     token: string;
@@ -59,11 +59,16 @@ setInterval(() => {
     }
 }, 1 * 1000);
 
-const httpsServer = https.createServer({
-	key: fs.readFileSync('/etc/letsencrypt/live/vps.erwijet.com/privkey.pem'),
-	cert: fs.readFileSync('/etc/letsencrypt/live/vps.erwijet.com/cert.pem'),
-	ca: fs.readFileSync('/etc/letsencrypt/live/vps.erwijet.com/chain.pem')
-}, app);
+const httpsServer = https.createServer(
+    {
+        key: fs.readFileSync(
+            '/etc/letsencrypt/live/vps.erwijet.com/privkey.pem'
+        ),
+        cert: fs.readFileSync('/etc/letsencrypt/live/vps.erwijet.com/cert.pem'),
+        ca: fs.readFileSync('/etc/letsencrypt/live/vps.erwijet.com/chain.pem'),
+    },
+    app
+);
 
 const io = new SIOServer(httpsServer, {
     cors: {
@@ -107,8 +112,12 @@ app.get('/callback', (req, res) => {
     connections[token].socket.emit('skey', { skey });
     deleteRecordByToken(token);
     res.setHeader('content-type', 'text/html');
-    res.end("<script>window.close();</script><p>You're all set! You can now close this page.</p>");
+    res.end(
+        "<script>window.close();</script><p>You're all set! You can now close this page.</p>"
+    );
 });
+
+app.get('/up', (req, res) => res.sendFile(__dirname + '/../public/server_meme.png'));
 
 app.get('/:token', (req, res) => {
     const token = req.params.token;
@@ -117,9 +126,8 @@ app.get('/:token', (req, res) => {
     return res.redirect(
         `https://tigerspend.rit.edu/login.php?cid=105&wason=https://${req.get(
             'host'
-        )}/callback?token=${token}`
+       )}/callback?token=${token}`
     );
-});
 
 const PORT = process.env.PORT || 2020;
 httpsServer.listen(PORT, () => console.log('listening on ' + PORT));
