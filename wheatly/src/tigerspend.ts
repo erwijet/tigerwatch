@@ -89,7 +89,15 @@ function parseCSV(csv: string[]): Transaction[] {
     return arr;
 }
 
-const handleDataFetch: RequestHandler = async (req, res) => {
+/**
+ * Request data from tigerspend.rit.edu and authenticate by skey, which should be
+ * specified in the req.params incoming object.
+ *
+ * @param req The incoming Express request
+ * @param res The outbound Express response
+ * @returns void
+ */
+const tigerspendRequestHandler: RequestHandler = async (req, res) => {
     const startDate = new Date();
     const endDate = new Date();
     const { skey } = req.params;
@@ -116,4 +124,4 @@ const handleDataFetch: RequestHandler = async (req, res) => {
     return res.json(parseCSV(csvData.split('\n')));
 };
 
-export default handleDataFetch;
+export default tigerspendRequestHandler;
