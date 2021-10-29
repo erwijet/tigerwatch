@@ -4,62 +4,15 @@ import cors from 'cors';
 import https from 'https';
 import http from 'https';
 import path from 'path';
-
 import fs from 'fs';
-import { config } from 'dotenv';
-import { Socket, Server as SIOServer } from 'socket.io';
 
-import handleDataFetch from './handleDataFetch';
+import { config } from 'dotenv';
+
+import tigerspendRequestHandler from './tigerspend';
+import { connections, validateToken, deleteRecordByToken } from './tokens';
 
 const app = express();
 app.use(cors(), morgan('common'), express.static(__dirname + '/../public'));
-
-type Connection = {
-    token: string;
-    socket: Socket;
-    ia: number; // issued at
-};
-
-const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-const TOKEN_LEN = 10;
-const TOKEN_MAX_AGE = 2 * 60 * 1000; // 2 min
-
-let connections: { [key: string]: Connection } = {};
-
-config();
-
-function generateToken(): string {
-    let token = '';
-
-    for (let i = 0; i < TOKEN_LEN; i++)
-        token += CHARS.charAt(Math.floor(Math.random() * CHARS.length));
-
-    return token;
-}
-
-function validateToken(token: string): boolean {
-    return !!connections[token];
-}
-
-function deleteRecordByToken(token: string) {
-    if (!connections[token]) return;
-    connections[token].socket.emit('debug', `connection for ${token} closed`);
-    connections[token].socket.disconnect();
-    delete connections[token];
-}
-
-// cleanup expired records (run purge every second)
-
-setInterval(() => {
-    for (let token of Object.keys(connections)) {
-        if (
-            new Date().getTime() >
-            new Date(connections[token].ia + TOKEN_MAX_AGE).getTime()
-        ) {
-            deleteRecordByToken(token);
-        }
-    }
-}, 1 * 1000);
 
 const httpsServer = https.createServer(
     {
@@ -72,38 +25,29 @@ const httpsServer = https.createServer(
     app
 );
 
-const io = new SIOServer(httpsServer, {
-    cors: {
-        origin: '*',
-    },
-});
+config();
 
-io.on('connection', (socket) => {
-    const token = generateToken();
-    socket.emit('debug', 'new connection: ' + token);
-
-    connections[token] = {
-        token,
-        socket,
-        ia: new Date().getTime(),
-    };
-
-    socket.emit(
-        'debug',
-        'current connections: ' + Object.keys(connections).length
-    );
-    socket.send(token);
-});
-
+/**
+ * test.html is a test enviornment which allows for manual interaction with the server
+ */
 app.get('/', (req, res) => {
     res.redirect('/test.html');
 });
 
-// tigerspend.rit.edu doesn't support CORS OOTB :/
-// so we implement a sort of reverse-proxy here to pull the data and add cors headers
-// we will also handle declaring the dates to pull the data from
-app.get('/data/:skey', handleDataFetch);
+/**
+ * tigerspend.rit.edu doesn't support CORS OOTB :/
+ * so we implement a sort of reverse-proxy here to pull the data and add cors headers
+ * we will also handle declaring the dates to pull the data from. I guess it also makes
+ * the client-side code more clean, so perks? Lol, I can't even with CORS sometimes.
+ */
+app.get('/data/:skey', tigerspendRequestHandler);
 
+/**
+ * This route will be called by tigerspend.rit.edu/login.php once the shibsession cookie
+ * has been converted into an skey url param. tigerspend.rit.edu will also have a token
+ * that we administered that will link it to a specific websocket. We will take that
+ * skey url param and then emit it on the websocket associated with the token
+ */
 app.get('/callback', (req, res) => {
     const token = req.query.token as string;
     const skey = req.query.skey as string;
@@ -119,10 +63,17 @@ app.get('/callback', (req, res) => {
     );
 });
 
+/**
+ * Just a route to test if the server is up. It send's a meme I thought was funny
+ */
 app.get('/up', (req, res) =>
     res.sendFile(path.resolve(__dirname + '/../public/img/server_meme.jpg'))
 );
 
+/**
+ * Accepts a token and will redirect the caller to the tigerspend SAML shib page,
+ * but the redirect will be pointed to our callback route for handling once finished
+ */
 app.get('/:token', (req, res) => {
     const token = req.params.token;
     if (!validateToken(token)) return res.status(401).end('haha, nope');
