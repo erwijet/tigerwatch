@@ -14,6 +14,7 @@ import useSocketIO from './socket';
 
 const app = express();
 app.use(cors(), morgan('common'), express.static(__dirname + '/../public'));
+app.use((req, res, next) => { res.setHeader('X-Powered-By', 'Your Companion Cube'); next() });
 
 const httpsServer = https.createServer(
     {
