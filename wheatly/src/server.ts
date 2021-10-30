@@ -18,10 +18,9 @@ app.use(cors(), morgan('common'), express.static(__dirname + '/../public'));
 const httpsServer = https.createServer(
     {
         key: fs.readFileSync(
-            '/etc/letsencrypt/live/vps.erwijet.com/privkey.pem'
+            './certs/privkey.pem'
         ),
-        cert: fs.readFileSync('/etc/letsencrypt/live/vps.erwijet.com/cert.pem'),
-        ca: fs.readFileSync('/etc/letsencrypt/live/vps.erwijet.com/chain.pem'),
+        cert: fs.readFileSync('./certs/fullchain.pem'),
     },
     app
 );
