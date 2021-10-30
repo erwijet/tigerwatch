@@ -80,7 +80,7 @@
     },
     {
         "name": "Noodle Bar",
-        "regex": "Global\\sVillage\\Cantina\\s&\\sGrille\\s[^3].*",
+        "regex": "Global\\sVillage\\sCantina\\s&\\sGrille\\s[^3].*",
         "icon": "utensils",
         "category": ""
     },
