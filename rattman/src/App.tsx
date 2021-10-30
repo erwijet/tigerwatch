@@ -1,26 +1,34 @@
 import './App.css';
-import { useState } from 'react';
-import { alertTitleClasses, Button } from '@mui/material';
+import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
+import { Button } from '@mui/material';
 import useStickyState from './useStickyState';
 import TigerwatchAppBar from './components/TigerwatchAppBar';
 import TransactionTable from './components/TransactionTable';
-import { setServers } from 'dns';
+import Hero from './components/Hero';
 import { Transaction, TransactionLocation } from 'tigerspend-types';
 
 function App() {
     // eslint-disable-next-line
-    const [skey, setSkey] = useStickyState<string>('', 'skey');
-    const [spendingData, setSpendingData] = useState([]);
+//    const [skey, setSkey] = useStickyState<string>('', 'skey');
+    const [spendingData, setSpendingData] = useState<Transaction[]>([] as Transaction[]);
+    const [ isLoading, setIsLoading ] = useState(false);
+
+    const getSkey = () => window.localStorage.getItem('skey') ?? '';
+    const setSkey = (skey: string) => window.localStorage.setItem('skey', skey)
+    
+    useEffect(() => {
+       syncSpendingData(); 
+    }, []);
 
     async function validateSKey() {
         return new Promise<void>(async (resolve) => {
-            const res = await fetch(`https://vps.erwijet.com/data/${skey}`);
+            const res = await fetch(`https://api.tigerwatch.app/data/${getSkey()}`);
             if (res.status === 401) {
-                const socket = io('https://vps.erwijet.com');
+                const socket = io('https://api.tigerwatch.app');
 
                 socket.on('message', (msg) => {
-                    window.open('https://vps.erwijet.com/' + msg);
+                    window.open('https://api.tigerwatch.app/' + msg);
                     socket.off('message'); // only listen to first message
                 });
 
@@ -34,13 +42,14 @@ function App() {
     }
 
     async function syncSpendingData() {
+        setIsLoading(true);
         await validateSKey();
-        const res = await fetch(`https://vps.erwijet.com/data/${skey}`);
+        const res = await fetch(`https://api.tigerwatch.app/data/${getSkey()}`);
         if (res.status === 401) {
-            throw (
+            throw Error(
                 'skey should have been validated but server returned 401\n' +
                 'skey: ' +
-                skey +
+                getSkey() +
                 '\n' +
                 JSON.stringify(res)
             ); // should *never* happen
@@ -61,16 +70,17 @@ function App() {
                     })
                 )
             );
+            setIsLoading(false);
         }
     }
 
     return (
         <div className="App">
-            <TigerwatchAppBar />
-            <Button variant="outlined" onClick={syncSpendingData}>
-                Sync Spending Data
-            </Button>
-            <TransactionTable data={spendingData} />
+            <TigerwatchAppBar handleRefresh={syncSpendingData}/>
+            <Hero 
+                title={spendingData.length == 0 ? '' : '$' + spendingData[0].balance.toString() + ' left' }
+            />
+            <TransactionTable data={spendingData} isLoading={isLoading}/>
         </div>
     );
 }

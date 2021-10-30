@@ -6,14 +6,31 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import type { Transaction } from 'tigerspend-types';
 
-export default function DenseTable(props: { data: Transaction[] }): JSX.Element {
+export default function DenseTable(props: { data: Transaction[], isLoading: boolean }): JSX.Element {
+
+  if (props.isLoading) {
+    return (
+      <Grid 
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{ minHeight: '100vh', position: "fixed" }}
+      >
+        <CircularProgress />
+      </Grid>
+    );
+  }
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+      <Table sx={{ minWidth: 250 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell>Location</TableCell>
@@ -24,14 +41,14 @@ export default function DenseTable(props: { data: Transaction[] }): JSX.Element 
         <TableBody>
           {props.data.map((row) => (
             <TableRow
-              key={row.date.getTime().toString()}
+              key={row.date.getTime().toString() + row.balance}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
                 {row.location.name}
               </TableCell>
               <TableCell align="right">{row.amount}</TableCell>
-              <TableCell align="right">{row.date}</TableCell>
+              <TableCell align="right">{row.date.toDateString()}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -6,7 +6,6 @@ export default function useStickyState<T>(
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
     const [val, setVal] = useState<T>(() => {
         const stickyValue = window.localStorage.getItem(key);
-
         return stickyValue !== null ? JSON.parse(stickyValue) : defaultValue;
     });
 
