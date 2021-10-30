@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import https from 'https';
+import http from 'https';
 import path from 'path';
 import fs from 'fs';
 
@@ -17,10 +18,9 @@ app.use(cors(), morgan('common'), express.static(__dirname + '/../public'));
 const httpsServer = https.createServer(
     {
         key: fs.readFileSync(
-            '/etc/letsencrypt/live/vps.erwijet.com/privkey.pem'
+            './certs/privkey.pem'
         ),
-        cert: fs.readFileSync('/etc/letsencrypt/live/vps.erwijet.com/cert.pem'),
-        ca: fs.readFileSync('/etc/letsencrypt/live/vps.erwijet.com/chain.pem'),
+        cert: fs.readFileSync('./certs/fullchain.pem'),
     },
     app
 );
@@ -88,3 +88,8 @@ app.get('/:token', (req, res) => {
 
 const PORT = process.env.PORT || 2020;
 httpsServer.listen(PORT, () => console.log('listening on ' + PORT));
+
+// force https lol
+express().use((req, res, next) => {
+    return res.redirect('https://' + req.headers['host'] + req.url);
+}).listen(80, () => console.log('listning on 80'));
