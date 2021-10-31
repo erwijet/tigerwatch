@@ -1,8 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
-import { Button } from '@mui/material';
-import useStickyState from './useStickyState';
 import TigerwatchAppBar from './components/TigerwatchAppBar';
 import TransactionTable from './components/TransactionTable';
 import Hero from './components/Hero';
@@ -16,7 +14,8 @@ function App() {
 
     const getSkey = () => window.localStorage.getItem('skey') ?? '';
     const setSkey = (skey: string) => window.localStorage.setItem('skey', skey)
-    
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
        syncSpendingData(); 
     }, []);
@@ -78,7 +77,7 @@ function App() {
         <div className="App">
             <TigerwatchAppBar handleRefresh={syncSpendingData}/>
             <Hero 
-                title={spendingData.length == 0 ? '' : '$' + spendingData[0].balance.toString() + ' left' }
+                title={spendingData.length === 0 ? '' : '$' + spendingData[0].balance.toString() + ' left' }
             />
             <TransactionTable data={spendingData} isLoading={isLoading}/>
         </div>

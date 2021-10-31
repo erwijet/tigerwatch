@@ -1,7 +1,7 @@
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
-export default (props: { title: string }) => {
+const Hero = (props: { title: string }) => {
     return (
         <Paper
             style={{ margin: "5% 10%", padding: '5%'}} 
@@ -11,3 +11,5 @@ export default (props: { title: string }) => {
         </Paper>
     )
 }
+
+export default Hero;
