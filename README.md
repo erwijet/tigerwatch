@@ -111,7 +111,7 @@ The way we do this is by using a `locations.json` file to contain an array of re
         "amount": -11.08,
         "balance": 1451.65,
         "date": "2021-10-30T16:58:00.000Z",
-        "location": { "name": "Noodle Bar", "icon": "utensils", "category": "" }
+        "location": { "name": "Noodle Bar", "icon": "utensils" }
     },
     {
         "amount": -1.6,
