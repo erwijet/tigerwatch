@@ -18,6 +18,15 @@ Logging in to check your dining dollar balance is a *royal* pain. Not only is ti
 
 Also, ITS laughed at my request to gain shibboleth access even though I *work for them*, so this was my successful attempt to utilize the features of Shibboleth SAML without actually having a registered SAML client; we just piggyback off of tigerspend.
 
+## Future Plans
+
+If you check out the production enviorment, you will notice that it looks rather not-great on desktop. I am not a UX designer by any means, but I am slowly working on implemented features. Feel free to add to this list of features or open an issue :D
+
+- [ ] D3 graph integration
+- [ ] Actally get NavBar widgets to do something
+	- [ ] Search bar to search transactions
+	- [X] Refresh button to refresh spending data
+	- [ ] Account button. Revoke skey?? Not 100% sure
 
 ## The Nuts, Bolts, and Magic
 
