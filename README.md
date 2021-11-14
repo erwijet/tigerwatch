@@ -23,10 +23,13 @@ Also, ITS laughed at my request to gain shibboleth access even though I *work fo
 If you check out the production enviorment, you will notice that it looks rather not-great on desktop. I am not a UX designer by any means, but I am slowly working on implemented features. Feel free to add to this list of features or open an issue :D
 
 - [ ] D3 graph integration
+	- [ ] Activity by time
+	- [ ] Activity by location
 - [ ] Actally get NavBar widgets to do something
 	- [ ] Search bar to search transactions
 	- [X] Refresh button to refresh spending data
 	- [ ] Account button. Revoke skey?? Not 100% sure
+- [ ] Add padding 😭 (idk why I haven't done this; i'm so lazy)
 
 ## The Nuts, Bolts, and Magic
 
