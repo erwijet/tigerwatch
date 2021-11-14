@@ -39,7 +39,7 @@ If you check out the production enviorment, you will notice that it looks rather
 
 Here is some precursor information about how data is accessed at tigerspend.rit.edu (not to be confused with tiger**watch**).
 
-Spending data is avalible in CSV format at `tigerspend.rit.edu/statmentdetail.php` with the following URL parameters:
+Spending data is avalible in CSV format at `tigerspend.rit.edu/statementdetail.php` with the following URL parameters:
 
    |parameter|description|
    |---|---|
