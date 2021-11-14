@@ -3,8 +3,7 @@
 
 An easy way for RIT students to track and monitor dining dollar spending
 
-## NOTE ##
-You will need to enable popup's for your browser / tigerspend.app. This is the same case for OAuth2 sign-ins. RIT's shibboleth sign in page will be launched in a new window. If you just see the screen spinning, make sure you have enabled pop-ups and then refresh.
+**NOTE**: You will need to enable popup's for your browser / tigerwatch.app. This is the same case for OAuth2 sign-ins. RIT's shibboleth sign in page will be launched in a new window. If you just see the screen spinning, make sure you have enabled pop-ups and then refresh.
 
 ## Project Structure
 
