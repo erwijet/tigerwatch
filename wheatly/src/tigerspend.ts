@@ -117,7 +117,9 @@ const tigerspendRequestHandler: RequestHandler = async (req, res) => {
         // x-server header is set to shib2.rit.edu when it redirects to shib auth
         // if it redirects us, it means it didn't approve our skey (it's expired/invalid). We handle this here
 
-        return res.status(401).end('invalid skey');
+        return res.redirect(
+            'https://tigerspend.rit.edu/login.php?wason=https://dev.tigerwatch.app:2020/callback'
+        );
     }
 
     const csvData: string = tigerspendRes.data as string;
