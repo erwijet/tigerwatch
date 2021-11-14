@@ -29,7 +29,7 @@ If you check out the production enviorment, you will notice that it looks rather
 	- [ ] Search bar to search transactions
 	- [X] Refresh button to refresh spending data
 	- [ ] Account button. Revoke skey?? Not 100% sure
-- [ ] Add padding 😭 (idk why I haven't done this; i'm so lazy)
+- [ ] Add margins 😭 (idk why I haven't done this; i'm so lazy)
 
 ## The Nuts, Bolts, and Magic
 
