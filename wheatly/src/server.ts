@@ -61,9 +61,9 @@ app.get('/callback', (req, res) => {
     const skey = req.query.skey as string;
 
     if (skey == '') return res.status(400).end('bad request');
-    res.cookie('skey', skey);
+    res.cookie('skey', skey, { domain: '.tigerwatch.app' });
 
-    return res.redirect('https://tigerwatch.app');
+    res.end('<script>(() => { globalThis.location.href = "https://tigerwatch.app" })()</script>');
 });
 
 /**
