@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Cookies from 'js-cookie';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -77,6 +78,12 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
     handleMobileMenuClose();
   };
 
+  const handleLogoutButtonClick = () => {
+    Cookies.set('skey', ''); // clear skey cookie
+    props.handleRefresh();
+    handleMenuClose();
+  };
+
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
@@ -99,7 +106,7 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleLogoutButtonClick}>Log Out</MenuItem>
     </Menu>
   );
 
