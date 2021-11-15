@@ -17,9 +17,7 @@ function App() {
         syncSpendingData();
     }, []);
 
-    let i = 0;
     async function syncSpendingData() {
-        if (++i > 5) return; 
         setIsLoading(true);
         console.log(Cookies.get('skey'));
         const res = await fetch(`https://api.tigerwatch.app/data/${Cookies.get('skey')}`);
