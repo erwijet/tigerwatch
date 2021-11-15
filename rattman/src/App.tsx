@@ -19,7 +19,6 @@ function App() {
 
     async function syncSpendingData() {
         setIsLoading(true);
-        console.log(Cookies.get('skey'));
         const res = await fetch(`https://api.tigerwatch.app/data/${Cookies.get('skey')}`);
 
         if (res.status === 401) {
@@ -53,7 +52,7 @@ function App() {
             <Hero
                 title={
                     spendingData.length === 0
-                        ? ''
+                        ? 'loading'
                         : '$' + spendingData[0].balance.toString() + ' left'
                 }
             />
