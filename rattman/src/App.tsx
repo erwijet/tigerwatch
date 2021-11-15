@@ -22,11 +22,11 @@ function App() {
         if (++i > 5) return; 
         setIsLoading(true);
         console.log(Cookies.get('skey'));
-        const res = await fetch(`https://dev.tigerwatch.app:2020/data/${Cookies.get('skey')}`);
+        const res = await fetch(`https://api.tigerwatch.app/data/${Cookies.get('skey')}`);
 
         if (res.status === 401) {
             // redirect user to shib login
-            window.location.href = 'https://tigerspend.rit.edu/login.php?wason=https://dev.tigerwatch.app:2020/callback'
+            window.location.href = 'https://tigerspend.rit.edu/login.php?wason=https://api.tigerwatch.app/callback'
             setIsLoading(false);
         } else {
             const rawData = await res.json();
