@@ -1,39 +1,47 @@
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import cors from 'cors';
 import https from 'https';
-import http from 'https';
+import http from 'http';
 import path from 'path';
 import fs from 'fs';
 
 import { config } from 'dotenv';
 
 import tigerspendRequestHandler from './tigerspend';
-import { connections, validateToken, deleteRecordByToken } from './tokens';
-import useSocketIO from './socket';
 
 const app = express();
-app.use(cors(), morgan('common'), express.static(__dirname + '/../public'));
-app.use((req, res, next) => { res.setHeader('X-Powered-By', 'Your Companion Cube'); next() });
-
-const httpsServer = https.createServer(
-    {
-        key: fs.readFileSync(
-            './certs/privkey.pem'
-        ),
-        cert: fs.readFileSync('./certs/fullchain.pem'),
-    },
-    app
+app.use(
+    cors(),
+    morgan('common'),
+    cookieParser(),
+    express.static(__dirname + '/../public')
 );
 
+app.use((_, res, next) => {
+    res.setHeader('X-Powered-By', 'Your Companion Cube'); // ✌
+    next();
+});
+
 config();
-useSocketIO(httpsServer);
+
+const server =
+    process.env.ENV !== 'DEV'
+        ? https.createServer(
+              {
+                  key: fs.readFileSync('./certs/privkey.pem'),
+                  cert: fs.readFileSync('./certs/fullchain.pem'),
+              },
+              app
+          )
+        : http.createServer(app);
 
 /**
- * test.html is a test enviornment which allows for manual interaction with the server
+ * Read from cookies and forward to /data/<skey>
  */
-app.get('/', (req, res) => {
-    res.redirect('/test.html');
+app.get('/data', (req, res) => {
+    return res.redirect('/data/' + (req.cookies.skey ?? 'skey'));
 });
 
 /**
@@ -46,23 +54,16 @@ app.get('/data/:skey', tigerspendRequestHandler);
 
 /**
  * This route will be called by tigerspend.rit.edu/login.php once the shibsession cookie
- * has been converted into an skey url param. tigerspend.rit.edu will also have a token
- * that we administered that will link it to a specific websocket. We will take that
- * skey url param and then emit it on the websocket associated with the token
+ * has been converted into an skey url param. We set that skey as a cookie and send the user
+ * back to the app
  */
 app.get('/callback', (req, res) => {
-    const token = req.query.token as string;
     const skey = req.query.skey as string;
 
-    if (token == '' || skey == '' || !validateToken(token))
-        return res.status(400).end('bad request');
+    if (skey == '') return res.status(400).end('bad request');
+    res.cookie('skey', skey, { domain: '.tigerwatch.app' });
 
-    connections[token].socket.emit('skey', { skey });
-    deleteRecordByToken(token);
-    res.setHeader('content-type', 'text/html');
-    res.end(
-        "<script>window.close();</script><p>You're all set! You can now close this page.</p>"
-    );
+    res.end('<script>(() => { globalThis.location.href = "https://tigerwatch.app" })()</script>');
 });
 
 /**
@@ -72,25 +73,15 @@ app.get('/up', (req, res) =>
     res.sendFile(path.resolve(__dirname + '/../public/img/server_meme.jpg'))
 );
 
-/**
- * Accepts a token and redirects the invoker to the tigerspend SAML shib page,
- * but the redirect will be pointed to our callback route for handling once finished
- */
-app.get('/:token', (req, res) => {
-    const token = req.params.token;
-    if (!validateToken(token)) return res.status(401).end('haha, nope');
-
-    return res.redirect(
-        `https://tigerspend.rit.edu/login.php?cid=105&wason=https://${req.get(
-            'host'
-        )}/callback?token=${token}`
-    );
-});
-
 const PORT = process.env.PORT || 2020;
-httpsServer.listen(PORT, () => console.log('listening on ' + PORT));
+server.listen(PORT, () => console.log('listening on ' + PORT));
 
 // force https lol
-express().use((req, res, next) => {
-    return res.redirect('https://' + req.headers['host'] + req.url);
-}).listen(80, () => console.log('listning on 80'));
+if (process.env.ENV !== 'DEV' && process.env.ENV !== 'STAGING') {
+    express()
+        .use((req, res, next) => {
+            if (process.env.ENV !== 'DEV')
+                return res.redirect('https://' + req.headers['host'] + req.url);
+        })
+        .listen(80, () => console.log('listning on 80'));
+}

@@ -117,7 +117,9 @@ const tigerspendRequestHandler: RequestHandler = async (req, res) => {
         // x-server header is set to shib2.rit.edu when it redirects to shib auth
         // if it redirects us, it means it didn't approve our skey (it's expired/invalid). We handle this here
 
-        return res.status(401).end('invalid skey');
+        return res.status(401).json({
+            msg: 'unauthorized skey value',
+        });
     }
 
     const csvData: string = tigerspendRes.data as string;
