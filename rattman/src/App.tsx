@@ -13,9 +13,9 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // useEffect(() => {
-    //     syncSpendingData();
-    // }, []);
+    useEffect(() => {
+        syncSpendingData();
+    }, []);
 
     async function syncSpendingData() {
         setIsLoading(true);
