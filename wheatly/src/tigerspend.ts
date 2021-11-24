@@ -95,7 +95,7 @@ function parseCSV(csv: string[]): Transaction[] {
  *
  * @param req The incoming Express request
  * @param res The outbound Express response
- * @returns void
+ * @returns null
  */
 const tigerspendRequestHandler: RequestHandler = async (req, res) => {
     const startDate = new Date();
