@@ -29,30 +29,32 @@ export default function DenseTable(props: { data: Transaction[], isLoading: bool
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 250 }} size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Location</TableCell>
-            <TableCell align="right">Spent</TableCell>
-            <TableCell align="right">Date</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.data.map((row) => (
-            <TableRow
-              key={row.date.getTime().toString() + row.balance}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.location.name}
-              </TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
-              <TableCell align="right">{row.date.toDateString()}</TableCell>
+    <Paper elevation={6} sx={{ m: 2 }}>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 250 }} size="small" aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Location</TableCell>
+              <TableCell align="right">Spent</TableCell>
+              <TableCell align="right">Date</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {props.data.map((row) => (
+              <TableRow
+                key={row.date.getTime().toString() + row.balance}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.location.name}
+                </TableCell>
+                <TableCell align="right">{row.amount}</TableCell>
+                <TableCell align="right">{row.date.toDateString()}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 }

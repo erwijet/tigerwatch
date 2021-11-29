@@ -79,12 +79,8 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
   };
 
   const handleLogoutButtonClick = () => {
-<<<<<<< HEAD
-    Cookies.set('skey', ''); // clear skey cookie
     props.handleRefresh();
-=======
     Cookies.remove('skey', { domain: '.tigerwatch.app', path: '/' });
->>>>>>> 42887e39837ff003fa8dc7c2405b051218c697a8
     handleMenuClose();
   };
 
