@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import type { Transaction } from 'tigerspend-types';
+import { Container } from '@mui/material';
 
 export default function DenseTable(props: { data: Transaction[], isLoading: boolean }): JSX.Element {
 
@@ -29,9 +30,9 @@ export default function DenseTable(props: { data: Transaction[], isLoading: bool
   }
 
   return (
-    <Paper elevation={6} sx={{ m: 2 }}>
+    <Container>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 250 }} size="small" aria-label="a dense table">
+        <Table sx={{ minWidth: 200 }} aria-label="a dense table">
           <TableHead>
             <TableRow>
               <TableCell>Location</TableCell>
@@ -49,12 +50,12 @@ export default function DenseTable(props: { data: Transaction[], isLoading: bool
                   {row.location.name}
                 </TableCell>
                 <TableCell align="right">{row.amount}</TableCell>
-                <TableCell align="right">{row.date.toDateString()}</TableCell>
+                <TableCell align="right">{row.date.toLocaleDateString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-    </Paper>
+    </Container>
   );
 }
