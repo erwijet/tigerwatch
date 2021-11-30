@@ -1,11 +1,7 @@
 {
-  "name": "@tigerwatch/hours",
-  "version": "1.0.0",
-  "description": "Get hours for RIT dining locations on campus",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Tyler Holewinski",
-  "license": "MIT"
+    "name": "tigerspend-types",
+    "version": "1.0.0",
+    "type": "module",
+    "author": "Tyler Holewinski",
+    "license": "MIT"
 }
