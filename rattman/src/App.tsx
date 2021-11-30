@@ -1,64 +1,38 @@
-import './App.css';
 import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Cookies from 'js-cookie';
+
+import type { Transaction } from 'tigerspend-types';
+
+import './App.css';
 import TigerwatchAppBar from './components/TigerwatchAppBar';
-import TransactionTable from './components/TransactionTable';
-import Hero from './components/Hero';
-import { Transaction, TransactionLocation } from 'tigerspend-types';
+
+import TransactionPage from './components/TransactionPage';
+import syncSpendingData from './util/spending';
 
 function App() {
-    const [spendingData, setSpendingData] = useState<Transaction[]>(
-        [] as Transaction[]
-    );
-    const [isLoading, setIsLoading] = useState(false);
+    const [ spendingData, setSpendingData ] = useState<Transaction[]>([] as Transaction[]);
+    const [ isLoading, setIsLoading ] = useState(true);
+
+    function handleRefresh() {
+        syncSpendingData(Cookies.get('skey') ?? '', setIsLoading, setSpendingData);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => {
-        syncSpendingData();
-    }, []);
-
-    async function syncSpendingData() {
-        setIsLoading(true);
-        const res = await fetch(`https://api.tigerwatch.app/data/${Cookies.get('skey')}`);
-
-        if (res.status === 401) {
-            // redirect user to shib login
-            window.location.href = 'https://tigerspend.rit.edu/login.php?wason=https://api.tigerwatch.app/callback'
-            setIsLoading(false);
-        } else {
-            const rawData = await res.json();
-            setSpendingData(
-                rawData.map(
-                    (rawEntry: {
-                        date: string;
-                        amount: string;
-                        balance: string;
-                        location: TransactionLocation;
-                    }): Transaction => ({
-                        date: new Date(rawEntry.date),
-                        amount: Number.parseFloat(rawEntry.amount),
-                        balance: Number.parseFloat(rawEntry.balance),
-                        location: rawEntry.location,
-                    })
-                )
-            );
-            setIsLoading(false);
-        }
-    }
+    // useEffect(() => {
+    //     handleRefresh();
+    // }, []);
 
     return (
         <div className="App">
-            <TigerwatchAppBar handleRefresh={syncSpendingData} />
-            <Hero
-                title={
-                    spendingData.length === 0
-                        ? 'loading'
-                        : '$' + spendingData[0].balance.toString() + ' left'
-                }
-            />
-            <TransactionTable data={spendingData} isLoading={isLoading} />
+            <TigerwatchAppBar handleRefresh={handleRefresh} />
+            <BrowserRouter>
+                <Routes>
+                    <Route element={<TransactionPage {...{isLoading, spendingData}} />} path="/" />
+                </Routes>
+            </BrowserRouter>
         </div>
-    );
+    )
 }
 
 export default App;

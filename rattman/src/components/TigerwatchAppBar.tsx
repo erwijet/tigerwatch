@@ -104,6 +104,7 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      className={'appbar'}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleLogoutButtonClick}>Log Out</MenuItem>

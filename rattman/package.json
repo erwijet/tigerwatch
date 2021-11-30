@@ -17,6 +17,7 @@
     "js-cookie": "^3.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
     "typescript": "^4.0.3",
     "web-vitals": "^0.2.4",
@@ -58,6 +59,7 @@
     ]
   },
   "devDependencies": {
-    "@types/js-cookie": "^3.0.0"
+    "@types/js-cookie": "^3.0.0",
+    "tigerspend-types": "^1.0.0"
   }
 }
