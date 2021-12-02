@@ -10,8 +10,9 @@ An easy way for RIT students to track and monitor dining dollar spending
 |Name|Description|
 |---|---|
 |rattman|The React PWA client|
-|wheatly|The express api written in node.js|
-|chell|**deprecated**, the cross-platform dart client
+|wheatly|The express api written in node.js (to be deprecated in favor of `caroline`)|
+|caroline|The tigerspend.rit.edu interop server written in elixir|
+|cavej|Type declarations for tigerwatch transaction data|
 
 TigerWatch is available as a progressive web app at [tigerwatch.app](https://tigerwatch.app)
 
