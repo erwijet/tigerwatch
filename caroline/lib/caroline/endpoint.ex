@@ -21,10 +21,16 @@ defmodule Caroline.Endpoint do
 
     get "/data/:skey" do
         case Tigerspend.fetch(skey) do
-            {:ok, csv} -> send_resp(conn, 200, csv)
+            {:ok, json} -> send_resp(conn, 200, json)
             {:error, :invalid_skey} -> send_resp(conn, 401, "Unauthorized skey value.\nskey: " <> skey)
             {:error, _} -> send_fatal_resp(conn, "request to tigerspend.rit.edu responded with a non-:ok status")
         end
+    end
+
+    get "/auth" do
+        conn
+        |> put_resp_header("location", "https://tigerspend.rit.edu/login.php?wason=https://api.tigerwatch.app/callback")
+        |> send_resp(302, "")
     end
 
     get "/callback" do

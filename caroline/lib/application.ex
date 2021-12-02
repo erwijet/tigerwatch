@@ -6,14 +6,14 @@ defmodule Caroline.Application do
     children = [
       {
         Plug.Cowboy, 
-        scheme: :https, 
-        port: 443,
-        plug: Caroline.Endpoint, 
-        options: [
-          otp_app: :caroline,
-          certfile: "priv/certs/fullchain.pem", 
-          keyfile: "priv/certs/privkey.pem", 
-        ]
+        scheme: :http, 
+        port: 80,
+        plug: Caroline.Endpoint 
+        # options: [
+        #   otp_app: :caroline,
+        #   certfile: "priv/certs/fullchain.pem", 
+        #   keyfile: "priv/certs/privkey.pem", 
+        # ]
       }
     ]
 

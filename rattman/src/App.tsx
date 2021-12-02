@@ -19,9 +19,9 @@ function App() {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => {
-        handleRefresh();
-    }, []);
+    // useEffect(() => {
+    //     handleRefresh();
+    // }, []);
 
     return (
         <div className="App">
@@ -29,6 +29,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route element={<TransactionPage {...{isLoading, spendingData}} />} path="/" />
+                    <Route element={<></>} path="/graph" />
                 </Routes>
             </BrowserRouter>
         </div>

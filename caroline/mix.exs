@@ -21,7 +21,8 @@ defmodule Caroline.MixProject do
   defp deps do
     [
       {:plug_cowboy, "~> 2.0"},
-      {:poison, "~> 5.0"}
+      {:poison, "~> 5.0"},
+      {:nimble_csv, "~> 1.1"}
     ]
   end
 end

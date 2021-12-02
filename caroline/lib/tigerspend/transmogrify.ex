@@ -3,9 +3,5 @@
 ## to transform in a surprising or magical manner.
 
 defmodule Caroline.Tigerspend.Transmogrify do
-    defp load_config do
-        "./config/locations.json"
-        |> File.read!()
-        |> Poison.decode!()
-    end
+    def main, do: nil
 end

@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import type { ReactElement } from 'react';
 
 import {
-    Home as HomeIcon
+    Home as HomeIcon,
+    BarChart as BarChartIcon
 } from '@mui/icons-material';
 
 type NavAction = {
@@ -49,6 +50,11 @@ function TigerwatchNavBar() {
                 path: '/',
                 name: 'Home',
                 icon: <HomeIcon /> 
+            },
+            {
+                path: '/graph',
+                name: 'Graph',
+                icon: <BarChartIcon />
             }
         ]}/>
     )
