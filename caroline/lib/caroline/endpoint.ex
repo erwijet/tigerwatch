@@ -11,7 +11,7 @@ defmodule Caroline.Endpoint do
     plug :dispatch
 
     get "/" do
-        send_resp(conn, 200, "ping")
+        send_resp(conn, 200, "yuh")
     end
 
     get "/data" do

@@ -1,5 +1,11 @@
 [
     {
+        "name": "Deposit",
+        "regex": "Deposit",
+        "icon": "money",
+        "category": ""
+    },
+    {
         "name": "Midnight Oil",
         "regex": "Midnight\\sOil\\s.*",
         "icon": "coffee",
