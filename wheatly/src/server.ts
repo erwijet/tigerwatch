@@ -52,6 +52,19 @@ app.get('/data', (req, res) => {
  */
 app.get('/data/:skey', tigerspendRequestHandler);
 
+app.get('/data/:skey', (req, res) => {
+    return res.json([{
+        amount: 0,
+        balance: 50.99,
+        date: "2021-1130T21:00.000Z",
+        location: {
+            name: "<IGNORE ME>",
+            icon: "none",
+            category: ""
+        }
+    }]);
+});
+
 /**
  * This route will be called by tigerspend.rit.edu/login.php once the shibsession cookie
  * has been converted into an skey url param. We set that skey as a cookie and send the user

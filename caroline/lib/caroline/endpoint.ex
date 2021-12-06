@@ -4,6 +4,7 @@ defmodule Caroline.Endpoint do
 
     plug Plug.Cube
     plug Plug.Cookies
+    plug Plug.Cors
     plug Plug.UrlParams
     plug Plug.Logger
     plug :match
@@ -35,11 +36,12 @@ defmodule Caroline.Endpoint do
 
     get "/callback" do
         skey = Map.get(conn.query_params, "skey")
+
         unless skey == nil do
             conn
-            |> put_resp_cookie("skey", skey)
-            |> put_resp_header("content-type", "text/html")
-            |> send_resp(200, "<script>window.close()</script>You can now close this window")
+            |> put_resp_cookie("skey", skey, domain: ".tigerwatch.app", http_only: false)
+            |> put_resp_header("location", "https://tigerwatch.app")
+            |> send_resp(302, "")
         else
             conn |> send_resp(400, "bad request")
         end
