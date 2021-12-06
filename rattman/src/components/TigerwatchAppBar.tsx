@@ -163,7 +163,7 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" style={{ backgroundColor: '#F76902' }}>
         <Toolbar>
           <IconButton
             size="large"

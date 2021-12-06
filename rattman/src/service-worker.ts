@@ -16,3 +16,11 @@ declare const self: ServiceWorkerGlobalScope;
 
 clientsClaim();
 precacheAndRoute(self.__WB_MANIFEST);
+
+/**
+ * override existing service worker, if one exists
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/skipWaiting
+ */
+self.addEventListener('install', (e) => {
+    self.skipWaiting();
+});

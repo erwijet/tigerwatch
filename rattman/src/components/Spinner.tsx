@@ -9,7 +9,7 @@ const Spinner = () => (
             transform: 'translate(-50%, -50%)',
         }}
     >
-        <CircularProgress />
+        <CircularProgress style={{ color: '#F76902' }}/>
     </div>
 );
 
