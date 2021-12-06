@@ -27,7 +27,9 @@ export default async function syncSpendingData(
                     balance: string;
                     location: TransactionLocation;
                 }): Transaction => ({
-                    date: new Date(rawEntry.date),
+                    date: new Date(
+                        rawEntry.date.replace('AM', ' AM').replace('PM', ' PM')
+                    ),
                     amount: Number.parseFloat(rawEntry.amount),
                     balance: Number.parseFloat(rawEntry.balance),
                     location: rawEntry.location,
