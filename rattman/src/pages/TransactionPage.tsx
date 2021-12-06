@@ -1,7 +1,7 @@
 import { Transaction } from 'tigerspend-types';
-import TigerwatchNavBar from './TigerwatchNavBar';
-import TransactionTable from './TransactionTable';
-import Hero from './Hero';
+import TigerwatchNavBar from '../components/TigerwatchNavBar';
+import TransactionTable from '../components/TransactionTable';
+import Hero from '../components/Hero';
 
 function TransactionPage(props: { spendingData: Transaction[], isLoading: boolean  }) {
     return (
