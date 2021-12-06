@@ -1,7 +1,7 @@
 # netlify is a little baby and needs us to allowlist all routes
 # since we handle them manually with react-router
 
-/           /index.html                             200
-/graph      /index.html                             200
+/           /index.html       200
+/graph      /index.html       200
 
-/gh      https://github.com/erwijet/tigerwatch   200
+/*          /                 200
