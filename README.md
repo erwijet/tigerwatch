@@ -57,7 +57,7 @@ Spending data is avalible in CSV format at `tigerspend.rit.edu/statementdetail.p
 	
 
 
-So, how do we get an `skey` value? `skey`s are administered by the `tigerwatch.rit.edu/login.php` endpoint. This endpoint takes  the following parameters:
+So, how do we get an `skey` value? `skey`s are administered by the `tigerspend.rit.edu/login.php` endpoint. This endpoint takes the following parameters:
 |parameter|description|
 |---|---|
 |skey|The session ID respresenting the users' session|
