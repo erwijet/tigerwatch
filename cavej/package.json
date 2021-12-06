@@ -1,7 +1,11 @@
 {
     "name": "tigerspend-types",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "type": "module",
     "author": "Tyler Holewinski",
-    "license": "MIT"
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/erwijet/tigerwatch.git"
+    }
 }
