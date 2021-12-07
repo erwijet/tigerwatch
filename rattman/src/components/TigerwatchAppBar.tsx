@@ -79,6 +79,7 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
   };
 
   const handleLogoutButtonClick = () => {
+    props.handleRefresh();
     Cookies.remove('skey', { domain: '.tigerwatch.app', path: '/' });
     handleMenuClose();
   };
@@ -103,6 +104,7 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      className={'appbar'}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleLogoutButtonClick}>Log Out</MenuItem>
@@ -161,7 +163,7 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" style={{ backgroundColor: '#F76902' }}>
         <Toolbar>
           <IconButton
             size="large"

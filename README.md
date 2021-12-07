@@ -1,6 +1,8 @@
 
 # TigerWatch
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/c5558385-9418-4ee3-8a0f-aa65e4083869/deploy-status)](https://app.netlify.com/sites/distracted-pare-04fe9c/deploys)
+
 An easy way for RIT students to track and monitor dining dollar spending
 
 **NOTE**: You will need to enable popup's for your browser / tigerwatch.app. This is the same case for OAuth2 sign-ins. RIT's shibboleth sign in page will be launched in a new window. If you just see the screen spinning, make sure you have enabled pop-ups and then refresh.
@@ -10,8 +12,9 @@ An easy way for RIT students to track and monitor dining dollar spending
 |Name|Description|
 |---|---|
 |rattman|The React PWA client|
-|wheatly|The express api written in node.js|
-|chell|**deprecated**, the cross-platform dart client
+|wheatly|The express api written in node.js (to be deprecated in favor of `caroline`)|
+|caroline|The tigerspend.rit.edu interop server written in elixir|
+|cavej|Type declarations for tigerwatch transaction data|
 
 TigerWatch is available as a progressive web app at [tigerwatch.app](https://tigerwatch.app)
 
@@ -31,7 +34,6 @@ If you check out the production enviorment, you will notice that it looks rather
 	- [ ] Search bar to search transactions
 	- [X] Refresh button to refresh spending data
 	- [ ] Account button. Revoke skey?? Not 100% sure
-- [ ] Add margins 😭 (idk why I haven't done this; i'm so lazy)
 
 ## The Nuts, Bolts, and Magic
 
@@ -55,7 +57,7 @@ Spending data is avalible in CSV format at `tigerspend.rit.edu/statementdetail.p
 	
 
 
-So, how do we get an `skey` value? `skey`s are administered by the `tigerwatch.rit.edu/login.php` endpoint. This endpoint takes  the following parameters:
+So, how do we get an `skey` value? `skey`s are administered by the `tigerspend.rit.edu/login.php` endpoint. This endpoint takes the following parameters:
 |parameter|description|
 |---|---|
 |skey|The session ID respresenting the users' session|
@@ -65,13 +67,37 @@ If the skey is blank or invalid, one will attempted to be generated and appended
 
 What this means is that if we can point that `wason` to a callback endpoint that we host, we can read and store the skey to make as many attempts as we want before the `skey` is expired, and we generate a new one again. The issue arises, however, the client will not be making a request to tigerspend in their browser, our server will be making the request. This raises the question of how will the user ever see the sign in page? This is how the flow of our server is constructed.
 
-![diagram](https://i.imgur.com/rik6bTt.jpeg)
+### Data flow from Tigerspend to Tigerwatch
 
-Notice here how then the user goes to log into shibboleth by navigating to the customized tigerspend.rit.edu/login.php link, it is the browser that redirects the user to the callback. So the question then becomes how do we associated the current websocket connection with this incoming /callback request. Now, the most intuitive answer might be to just look at the IP address of the incoming request and then also record the IP address when the websocket is created to associated them, but personally I want to store as little of the user's data as possible because I don't want the RIT Information Security Office coming after me, so instead we generate some random token once the websocket is opened and we store that token in a dictionary pointing to its corresponding websocket. Then we send that token as the first thing back to the client. Now, when some request hits the /callback endpoint with a `token` and `skey` url parameter, we know which socket to send the `skey` down. The socket is then closed as it is no longer needed. Also, tokens & sockets have a lifespan of 2 minutes, regardless of traffic.
+When unauthenticated:
+
+1. `tigerwatch.app` -GET-> `api.tigerwatch.app/data`
+2. `api.tigerwatch.app/data` -302-> `api.tigerwatch.app/data/<skey>` where `<skey>` is pulled from the request cookies.
+3. `api.tigerwatch.app/data/<skey>` -GET-> `tigerspend.rit.edu/statmentdetail?skey=<skey>`
+4. `tigerspend.rit.edu/statmentdetail?skey=<skey>` -302-> `tigerspend.rit.edu/login.php?wason=/statementdetail`
+5. `tigerwatch.app` <-401- `api.tigerwatch.app/data/<skey>`
+
+Tigerspend 302's request to shib server for authentication, which the server then tells the client by responding with `401`. The reason we don't just follow this shib redirect is because `tigerspend.rit.edu/statementdetail` sets the `wason` of the shib auth to `/statmentdetail`, which means we will not be able to capture it for future use. Instead, we employ our own authentication routine:
+
+1. `tigerwatch.app` navigates to `api.tigerwatch.app/auth`
+2. `api.tigerwatch.app/auth` -302-> `tigerspend.rit.edu/login?wason=api.tigerwatch.app/callback`
+3. `tigerspend.rit.edu/login?wason=api.tigerwatch.app/callback` -302-> `shibboleth.main.ad.rit.edu/idp/profile/SAML2/Redirect/SSO?execution=e1s2`
+4. *user authenticates with Shibboleth*
+5. `shibboleth.main.ad.rit` -302-> `api.tigerwatch.app/callback?skey=<skey>` where `<skey>` is the new and valid skey
+6. `api.tigerwatch.app/callback` sets `skey` as a cookie on all `*.tigerwatch.app` subdomains and then redirects back to `tigerwatch.app`
+
+Tigerwatch is now reloaded, and begins its data fetch routine again. This time, with a valid `skey`:
+
+1. `tigerwatch.app` -GET-> `api.tigerwatch.app/data`
+2. `api.tigerwatch.app/data` -302-> `api.tigerwatch.app/data/<skey>`
+3. `api.tigerwatch.app/data/<skey>` -GET-> `tigerspend.rit.edu/statmentdetail?skey=<skey>`
+4. `api.tigerwatcg.app/data<skey>` <-200- **Raw CSV Spending Data**
+5. api.tigerwatch.app matches and formats against locationspec file, `locations.json` (see below in 'data transformation'), and converts to JSON
+6. `tigerwatch.app` <-200- **The relevent, JSON Spending Data**
 
 ### Data Transformation
 
-When the CSV data comes into the server, it looks like this:
+When the CSV data comes into `api.tigerwatch.app`, it looks like this:
 
 |Date|Description|Amount|Balance|
 |---|---|---|---|

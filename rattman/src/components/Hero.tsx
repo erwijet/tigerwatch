@@ -1,8 +1,8 @@
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
-const Hero = (props: { title: string }) => {
-    return (
+const Hero = (props: { title: string, isLoading: boolean }) => {
+    return props.isLoading ? (<></>) : (
         <Paper
             style={{ margin: "5% 10%", padding: '5%'}} 
             elevation={6}

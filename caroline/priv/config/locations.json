@@ -1,0 +1,129 @@
+[
+    {
+        "name": "Deposit",
+        "regex": "Deposit",
+        "icon": "money",
+        "category": ""
+    },
+    {
+        "name": "Midnight Oil",
+        "regex": "Midnight\\sOil\\s.*",
+        "icon": "coffee",
+        "category": ""
+    },
+    {
+        "name": "Artesano's Cafe",
+        "regex": "Artesano\\sBakery\\s&\\sCafe.*",
+        "icon": "",
+        "category": "coffee"
+    },
+    {
+        "name": "RITz Sports Zone",
+        "regex": "RITz\\sSports\\sZone.*",
+        "icon": "",
+        "category": "utensils"
+    },
+    {
+        "name": "Drink Vending Machine",
+        "regex": ".*BEVERAGE.*",
+        "icon": "",
+        "category": "wine-glass-alt"
+    },
+    {
+        "name": "Nathan's Soup & Salad",
+        "regex": "Nathan's\\sSoup\\s&\\sSalad.*",
+        "icon": "utensils",
+        "category": ""
+    },
+    { "name": "Beanz", "regex": "Beanz.*", "icon": "coffee", "category": "" },
+    {
+        "name": "Ctrl Alt DELi",
+        "regex": "Ctrl\\sAlt\\sDELi.*",
+        "icon": "utensils",
+        "category": ""
+    },
+    {
+        "name": "Sol's Underground",
+        "regex": "Sol's\\sUnderground.*",
+        "icon": "utensils",
+        "category": ""
+    },
+    {
+        "name": "The Commons",
+        "regex": "The\\sCommons.*",
+        "icon": "utensils",
+        "category": ""
+    },
+    {
+        "name": "Snack Vending Machine",
+        "regex": ".*SNACK.*",
+        "icon": "cookie-bite",
+        "category": ""
+    },
+    {
+        "name": "Crossroads",
+        "regex": "Cafe\\s&\\sMarket\\sat\\sCrossroads.*",
+        "icon": "utensils",
+        "category": ""
+    },
+    {
+        "name": "Global Village Market",
+        "regex": "Global\\sVillage\\sMarket.*",
+        "icon": "utensils",
+        "category": ""
+    },
+    {
+        "name": "Brick City Cafe",
+        "regex": "Brick\\sCity\\sCafe.*",
+        "icon": "utensils",
+        "category": ""
+    },
+    {
+        "name": "Salsarita's",
+        "regex": "Global\\sVillage\\sCantina\\s&\\sGrille\\s3.*",
+        "icon": "utensils",
+        "category": ""
+    },
+    {
+        "name": "Noodle Bar",
+        "regex": "Global\\sVillage\\sCantina\\s&\\sGrille\\s[^3].*",
+        "icon": "utensils",
+        "category": ""
+    },
+    {
+        "name": "Ben & Jerrie's",
+        "regex": "Ben\\s&\\sJerrie's.*",
+        "icon": "ice-cream",
+        "category": ""
+    },
+    {
+        "name": "Gracie's",
+        "regex": "Gracie's.*",
+        "icon": "utensils",
+        "category": ""
+    },
+    {
+        "name": "NRH Corner Store",
+        "regex": "The\\sCorner\\sStore.*",
+        "icon": "shopping-basket",
+        "category": ""
+    },
+    {
+        "name": "Food Truck",
+        "regex": "Campus\\Concessions\\s.*",
+        "icon": "truck",
+        "category": ""
+    },
+    {
+        "name": "The College Grind",
+        "regex": "The\\sCollege\\sGrind.*",
+        "icon": "coffee",
+        "category": ""
+    },
+    {
+        "name": "Food Vending Machine",
+        "regex": ".*FOOD.*",
+        "icon": "cookie-bite",
+        "category": ""
+    }
+]
