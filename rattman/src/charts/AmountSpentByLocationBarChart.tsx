@@ -16,13 +16,14 @@ function AmountSpentByLocationBarChart(
 ) {
     const chartData = props.spendingData
         .map((transaction) => ({
-            amount: transaction.amount,
+            amount: Math.abs(transaction.amount),
             location: transaction.location.name,
         }))
+        .filter(({ location }) => location != 'Deposit')
         .reduce<{ location: string, amount: number}[]>((acc, elem) => {
 
             for (let entry of acc) {
-                if (entry.location == elem.location) {
+                if (entry.location === elem.location) {
                     entry.amount += elem.amount;
                     return acc;
                 }
@@ -31,10 +32,11 @@ function AmountSpentByLocationBarChart(
             acc.push({ ...elem });
 
             return acc;
-        }, [] as { location: string, amount: number }[]);
+        }, [] as { location: string, amount: number }[])
+        .sort((a, b) => a.amount - b.amount);
 
     return (
-        <Chart data={chartData}>
+        <Chart data={chartData} rotated={true}>
             <ArgumentAxis />
             <ValueAxis />
 

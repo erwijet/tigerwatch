@@ -9,7 +9,7 @@ function GraphPage(props: { spendingData: Transaction[], isLoading: boolean  }) 
     return (
         <>
             <TigerwatchNavBar />
-            <Paper>
+            <Paper elevation={4} sx={{m: 2}}>
                 <AmountSpentByLocationBarChart { ...props }/>
             </Paper>
         </>
