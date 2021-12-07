@@ -4,6 +4,9 @@
 /*/**/yarn.lock
 /*/**/package-lock.json
 
+# chell is still non-functional
+/chell
+
 # certbot
 /*/**/.well-known/
 
