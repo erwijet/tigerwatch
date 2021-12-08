@@ -2,16 +2,36 @@ import React from 'react';
 import type { Transaction } from 'tigerspend-types';
 
 export declare type ChartProps = {
-    transactionData: Transaction[]
+    spendingData: Transaction[]
 }
 
-declare type ReducerFn<T> = (data: Transaction[]) => T[]
+declare type ChartState<T> = {
+    loading: boolean,
+    graphableData: T[]
+}
 
-export default abstract class ChartComponent<T> extends React.Component<ChartProps> {
-    private fn: ReducerFn<T>;
-    
-    constructor(props: ChartProps, fn: ReducerFn<T>) {
+export default abstract class ChartComponent<T> extends React.Component<ChartProps, ChartState<T>> {
+    abstract reduce(data: Transaction[]): T[];
+
+    constructor(props: ChartProps) {
         super(props);
-        this.fn = fn;
+        this.state = {
+            loading: true,
+            graphableData: [] as T[]
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.state.graphableData.length > 0) return; // no update if data already is loaded
+
+        this.setState(() => {
+            return { loading: true };
+        });
+
+        const graphableData = this.reduce(this.props.spendingData);
+
+        this.setState(() => {
+            return { loading: false, graphableData }
+        });
     }
 };
