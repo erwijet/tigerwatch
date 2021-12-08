@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
     ArgumentAxis,
     ValueAxis,
@@ -50,7 +52,5 @@ class AmountSpentByLocationBarChart extends ChartComponent<Graphable> {
         )
     }
 }
-
-
 
 export default AmountSpentByLocationBarChart;
