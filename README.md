@@ -53,8 +53,13 @@ Spending data is avalible in CSV format at `tigerspend.rit.edu/statementdetail.p
    |endDate|The **newest** point in time to fetch data from. This is of the format YYYY-MM-DD|
    |acct|The account code. This is the flag that determines if Dining Dollars, Voluntary Dining Dollars, or Tiger Bucks are returned|
    |format|Self-explanatory. We keep this fixed as `csv`|
-
-	
+   
+More specifically, the acct codes are as follows:
+|acct code|account description|
+|---|---|
+|4|Dining Dollars|
+|24|Voluntary Dining Dollars|
+|1|Tiger Bucks|
 
 
 So, how do we get an `skey` value? `skey`s are administered by the `tigerspend.rit.edu/login.php` endpoint. This endpoint takes the following parameters:
