@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
     ArgumentAxis,
     ValueAxis,
@@ -8,7 +6,7 @@ import {
 } from '@devexpress/dx-react-chart-material-ui';
 
 import Spinner from '../components/Spinner';
-import ChartComponent, { ChartProps } from './ChartComponent';
+import ChartComponent from './ChartComponent';
 import type {Transaction} from 'tigerspend-types';
 
 declare type Graphable = {
