@@ -7,6 +7,8 @@ import Cookies from 'js-cookie';
 import TigerwatchAppBar from './components/TigerwatchAppBar';
 import TransactionPage from './pages/TransactionPage';
 import GraphPage from './pages/GraphPage';
+import SpendCardPage from './pages/SpendCardPage';
+
 import syncSpendingData from './util/spending';
 
 import type { Transaction } from 'tigerspend-types';
@@ -44,6 +46,10 @@ function App() {
                     <Route
                         element={<GraphPage {...{ isLoading, spendingData }} />}
                         path="/graph"
+                    />
+                    <Route
+                        element={<SpendCardPage />} 
+                        path="/spendcard"
                     />
                 </Routes>
             </BrowserRouter>

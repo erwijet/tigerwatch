@@ -5,7 +5,8 @@ import type { ReactElement } from 'react';
 
 import {
     Home as HomeIcon,
-    BarChart as BarChartIcon
+    BarChart as BarChartIcon,
+    CreditScore as CreditScoreIcon
 } from '@mui/icons-material';
 
 type NavAction = {
@@ -55,6 +56,11 @@ function TigerwatchNavBar() {
                 path: '/graph',
                 name: 'Graph',
                 icon: <BarChartIcon />
+            },
+            {
+                path: '/spendcard',
+                name: 'Card',
+                icon: <CreditScoreIcon />
             }
         ]}/>
     )
