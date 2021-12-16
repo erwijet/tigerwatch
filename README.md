@@ -12,7 +12,6 @@ An easy way for RIT students to track and monitor dining dollar spending
 |Name|Description|
 |---|---|
 |rattman|The React PWA client|
-|wheatly|The express api written in node.js (to be deprecated in favor of `caroline`)|
 |caroline|The tigerspend.rit.edu interop server written in elixir|
 |cavej|Type declarations for tigerwatch transaction data|
 
@@ -33,7 +32,9 @@ If you check out the production enviorment, you will notice that it looks rather
 - [ ] Actally get NavBar widgets to do something
 	- [ ] Search bar to search transactions
 	- [X] Refresh button to refresh spending data
-	- [ ] Account button. Revoke skey?? Not 100% sure
+	- [ ] Account button? 
+- [ ] Add some sort of drop down to toggle between accounts (dining dollars / tigerbucks, etc).
+    - [ ] Possible aggregation of *all* accounts into one account, where each transaction has an attached account?
 
 ## The Nuts, Bolts, and Magic
 
