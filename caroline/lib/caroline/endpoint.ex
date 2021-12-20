@@ -22,8 +22,14 @@ defmodule Caroline.Endpoint do
 
     get "/data/:skey" do
         case Tigerspend.fetch(skey) do
-            {:ok, json} -> send_resp(conn, 200, json)
-            {:error, :invalid_skey} -> send_resp(conn, 401, "Unauthorized skey value.\nskey: " <> skey)
+            {:ok, json} -> 
+                conn 
+                |> put_resp_content_type("application/json") 
+                |> send_resp(200, json)
+            {:error, :invalid_skey} -> 
+                conn
+                |> put_resp_content_type("application/json") 
+                |> send_resp(401, "Unauthorized skey value.\nskey: " <> skey)
             {:error, _} -> send_fatal_resp(conn, "request to tigerspend.rit.edu responded with a non-:ok status")
         end
     end
