@@ -4,6 +4,9 @@
 /*/**/yarn.lock
 /*/**/package-lock.json
 
+# build tools
+/chell/*/**/target
+
 # certbot
 /*/**/.well-known/
 

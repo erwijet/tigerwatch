@@ -16,19 +16,11 @@ type NavAction = {
 }
 
 function Nav({ actions }: { actions: NavAction[] }) {
-
-    const handleChange = (idx: number) => {
-        window.location.href = actions[idx].path; 
-    }
-
     return (
         <BottomNavigation
             className={'navbar'}
             showLabels
             value={window.location.href}
-            onChange={(_, newValue) => {
-                handleChange(newValue);
-            }}
         >
             { actions.map(action => {
                 return (

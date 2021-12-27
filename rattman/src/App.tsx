@@ -29,6 +29,7 @@ function App() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
+        console.log("current spending data...", { spendingData });
         handleRefresh();
     }, []);
 

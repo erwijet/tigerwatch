@@ -6,12 +6,12 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    Container,
 } from '@mui/material';
 
 import Spinner from './Spinner';
 
 import type { Transaction } from 'tigerspend-types';
-import { Container } from '@mui/material';
 
 export default function DenseTable(props: {
     data: Transaction[];
@@ -36,7 +36,7 @@ export default function DenseTable(props: {
                                 key={
                                     row.date.getTime().toString() + row.balance
                                 }
-                                sx={{ '&:last-child td, &:last-child th': {} }}
+                                sx={{'&:last-child td, &:last-child th': {}}}
                             >
                                 <TableCell component="th" scope="row">
                                     {row.location.name}
