@@ -1,4 +1,4 @@
-/*/**/node_modules
+/**/node_modules
 /*/**/.env
 
 /*/**/yarn.lock
@@ -6,6 +6,9 @@
 
 # chell is still non-functional
 /chell
+
+# lcmm
+!/chell/lcmm
 
 # certbot
 /*/**/.well-known/
