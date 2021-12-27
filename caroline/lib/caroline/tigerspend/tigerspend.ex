@@ -2,7 +2,7 @@ defmodule Caroline.Tigerspend do
     import Caroline.Tigerspend.Dates
     import Caroline.Tigerspend.Parsing
 
-    @acct   24  # account 4 references "Dining Dollars" on tigerspend.rit.edu
+    @acct   4  # account 4 references "Dining Dollars" on tigerspend.rit.edu
 
     def build_tigerspend_link({{startdate, enddate}, skey}) do
         to_charlist("http://tigerspend.rit.edu/statementdetail.php?cid=105&skey=" <> skey <> "&startdate=" <> startdate <> "&enddate=" <> enddate <> "&acct=" <> to_string(@acct) <> "&format=csv")
