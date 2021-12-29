@@ -35,7 +35,7 @@
         "icon": "restaurant",
         "category": "dining"
     },
-    { "name": "Beanz", "regex": "Beanz.*", "icon": "coffee", "category": "" },
+    { "name": "Beanz", "regex": "Beanz.*", "icon": "local_cafe", "category": "coffee" },
     {
         "name": "Ctrl Alt DELi",
         "regex": "Ctrl\\sAlt\\sDELi.*",
