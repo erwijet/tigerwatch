@@ -14,6 +14,7 @@ An easy way for RIT students to track and monitor dining dollar spending
 |rattman|The React PWA client|
 |caroline|The tigerspend.rit.edu interop server written in elixir|
 |cavej|Type declarations for tigerwatch transaction data|
+|chell|A collection of useful dev tools, written in rust|
 
 TigerWatch is available as a progressive web app at [tigerwatch.app](https://tigerwatch.app)
 
