@@ -3,7 +3,7 @@
         "name": "Deposit",
         "regex": "Deposit",
         "icon": "attach_money",
-        "category": ""
+        "category": "admin_tasks"
     },
     {
         "name": "Midnight Oil",
@@ -20,7 +20,7 @@
     {
         "name": "RITz Sports Zone",
         "regex": "RITz\\sSports\\sZone.*",
-        "icon": "restuarant",
+        "icon": "restaurant",
         "category": "dining_hall"
     },
     {
