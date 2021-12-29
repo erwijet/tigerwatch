@@ -81,7 +81,7 @@
     {
         "name": "Salsarita's",
         "regex": "Global\\sVillage\\sCantina\\s&\\sGrille\\s3.*",
-        "icon": "restuarant",
+        "icon": "restaurant",
         "category": "dining"
     },
     {
