@@ -99,7 +99,7 @@
     {
         "name": "Gracie's",
         "regex": "Gracie's.*",
-        "icon": "restuarant",
+        "icon": "restaurant",
         "category": "dining_hall"
     },
     {
