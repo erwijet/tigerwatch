@@ -2,128 +2,128 @@
     {
         "name": "Deposit",
         "regex": "Deposit",
-        "icon": "money",
+        "icon": "attach_money",
         "category": ""
     },
     {
         "name": "Midnight Oil",
         "regex": "Midnight\\sOil\\s.*",
-        "icon": "coffee",
-        "category": ""
+        "icon": "local_cafe",
+        "category": "coffee"
     },
     {
         "name": "Artesano's Cafe",
         "regex": "Artesano\\sBakery\\s&\\sCafe.*",
-        "icon": "",
+        "icon": "local_cafe",
         "category": "coffee"
     },
     {
         "name": "RITz Sports Zone",
         "regex": "RITz\\sSports\\sZone.*",
-        "icon": "",
-        "category": "utensils"
+        "icon": "restuarant",
+        "category": "dining_hall"
     },
     {
         "name": "Drink Vending Machine",
         "regex": ".*BEVERAGE.*",
-        "icon": "",
-        "category": "wine-glass-alt"
+        "icon": "wine_bar",
+        "category": "vending"
     },
     {
         "name": "Nathan's Soup & Salad",
         "regex": "Nathan's\\sSoup\\s&\\sSalad.*",
-        "icon": "utensils",
-        "category": ""
+        "icon": "restaurant",
+        "category": "dining"
     },
     { "name": "Beanz", "regex": "Beanz.*", "icon": "coffee", "category": "" },
     {
         "name": "Ctrl Alt DELi",
         "regex": "Ctrl\\sAlt\\sDELi.*",
-        "icon": "utensils",
-        "category": ""
+        "icon": "restaurant",
+        "category": "dining"
     },
     {
         "name": "Sol's Underground",
         "regex": "Sol's\\sUnderground.*",
-        "icon": "utensils",
-        "category": ""
+        "icon": "restaurant",
+        "category": "dining"
     },
     {
         "name": "The Commons",
         "regex": "The\\sCommons.*",
-        "icon": "utensils",
-        "category": ""
+        "icon": "restaurant",
+        "category": "dining_hall"
     },
     {
         "name": "Snack Vending Machine",
         "regex": ".*SNACK.*",
-        "icon": "cookie-bite",
-        "category": ""
+        "icon": "cookie",
+        "category": "vending"
     },
     {
         "name": "Crossroads",
         "regex": "Cafe\\s&\\sMarket\\sat\\sCrossroads.*",
-        "icon": "utensils",
-        "category": ""
+        "icon": "restaurant",
+        "category": "dining_hal"
     },
     {
         "name": "Global Village Market",
         "regex": "Global\\sVillage\\sMarket.*",
-        "icon": "utensils",
-        "category": ""
+        "icon": "shopping_cart",
+        "category": "shopping"
     },
     {
         "name": "Brick City Cafe",
         "regex": "Brick\\sCity\\sCafe.*",
-        "icon": "utensils",
-        "category": ""
+        "icon": "restaurant",
+        "category": "dining_hall"
     },
     {
         "name": "Salsarita's",
         "regex": "Global\\sVillage\\sCantina\\s&\\sGrille\\s3.*",
-        "icon": "utensils",
-        "category": ""
+        "icon": "restuarant",
+        "category": "dining"
     },
     {
         "name": "Noodle Bar",
         "regex": "Global\\sVillage\\sCantina\\s&\\sGrille\\s[^3].*",
-        "icon": "utensils",
-        "category": ""
+        "icon": "ramen_dining",
+        "category": "dining"
     },
     {
         "name": "Ben & Jerrie's",
         "regex": "Ben\\s&\\sJerrie's.*",
-        "icon": "ice-cream",
-        "category": ""
+        "icon": "icecream",
+        "category": "dessert"
     },
     {
         "name": "Gracie's",
         "regex": "Gracie's.*",
-        "icon": "utensils",
-        "category": ""
+        "icon": "restuarant",
+        "category": "dining_hall"
     },
     {
         "name": "NRH Corner Store",
         "regex": "The\\sCorner\\sStore.*",
-        "icon": "shopping-basket",
-        "category": ""
+        "icon": "shopping_cart",
+        "category": "shopping"
     },
     {
         "name": "Food Truck",
         "regex": "Campus\\Concessions\\s.*",
-        "icon": "truck",
-        "category": ""
+        "icon": "local_shipping",
+        "category": "dining_hall"
     },
     {
         "name": "The College Grind",
         "regex": "The\\sCollege\\sGrind.*",
-        "icon": "coffee",
-        "category": ""
+        "icon": "local_cafe",
+        "category": "coffee"
     },
     {
         "name": "Food Vending Machine",
         "regex": ".*FOOD.*",
-        "icon": "cookie-bite",
-        "category": ""
+        "icon": "lunch_dining",
+        "category": "vending"
     }
 ]
