@@ -1,4 +1,7 @@
 import './App.css';
+import React from 'react';
+import { useMediaQuery, CssBaseline } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -14,6 +17,17 @@ import syncSpendingData from './util/spending';
 import type { Transaction } from 'tigerspend-types';
 
 function App() {
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+    const theme = React.useMemo(
+        () =>
+            createTheme({
+                palette: {
+                    mode: prefersDarkMode ? 'dark' : 'light',
+                },
+            }),
+        [prefersDarkMode]
+    );
+
     const [spendingData, setSpendingData] = useState<Transaction[]>(
         [] as Transaction[]
     );
@@ -29,32 +43,37 @@ function App() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
-        console.log("current spending data...", { spendingData });
+        console.log('current spending data...', { spendingData });
         handleRefresh();
     }, []);
 
     return (
-        <div className="App">
-            <TigerwatchAppBar handleRefresh={handleRefresh} />
-            <BrowserRouter>
-                <Routes>
-                    <Route
-                        element={
-                            <TransactionPage {...{ isLoading, spendingData }} />
-                        }
-                        path="/"
-                    />
-                    <Route
-                        element={<GraphPage {...{ isLoading, spendingData }} />}
-                        path="/graph"
-                    />
-                    <Route
-                        element={<SpendCardPage />} 
-                        path="/spendcard"
-                    />
-                </Routes>
-            </BrowserRouter>
-        </div>
+        <ThemeProvider theme={theme}>
+            {/* include cssbaseline to make background comply with theming */}
+            <CssBaseline />
+            <div className="App">
+                <TigerwatchAppBar handleRefresh={handleRefresh} />
+                <BrowserRouter>
+                    <Routes>
+                        <Route
+                            element={
+                                <TransactionPage
+                                    {...{ isLoading, spendingData }}
+                                />
+                            }
+                            path="/"
+                        />
+                        <Route
+                            element={
+                                <GraphPage {...{ isLoading, spendingData }} />
+                            }
+                            path="/graph"
+                        />
+                        <Route element={<SpendCardPage />} path="/spendcard" />
+                    </Routes>
+                </BrowserRouter>
+            </div>
+        </ThemeProvider>
     );
 }
 

@@ -1,37 +1,35 @@
 import React from 'react';
 import type { Transaction } from 'tigerspend-types';
 
-export declare type ChartProps = {
-    spendingData: Transaction[]
-}
+export type ChartProps = {
+    spendingData: Transaction[];
+    readyFn: () => void;
+};
 
-declare type ChartState<T> = {
-    loading: boolean,
-    graphableData: T[]
-}
+type ChartState<T> = {
+    graphableData: T[];
+};
 
-export default abstract class ChartComponent<T> extends React.Component<ChartProps, ChartState<T>> {
+export default abstract class ChartComponent<T> extends React.Component<
+    ChartProps,
+    ChartState<T>
+> {
     abstract reduce(data: Transaction[]): T[];
 
     constructor(props: ChartProps) {
         super(props);
         this.state = {
-            loading: true,
-            graphableData: [] as T[]
-        }
+            graphableData: [] as T[],
+        };
     }
 
-    componentDidUpdate() {
-        if (this.state.graphableData.length > 0) return; // no update if data already is loaded
-
-        this.setState(() => {
-            return { loading: true };
-        });
-
+    componentDidMount() {
         const graphableData = this.reduce(this.props.spendingData);
+        this.setState(() => ({
+            graphableData,
+        }));
 
-        this.setState(() => {
-            return { loading: false, graphableData }
-        });
+        console.log('calling ready');
+        this.props.readyFn(); // announce to parent that this particular graph's data has been processed
     }
-};
+}

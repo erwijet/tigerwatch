@@ -1,9 +1,12 @@
 #![feature(decl_macro)]
 #![macro_use]
+pub mod chaining;
+
 extern crate rocket;
 
+use chaining::Chaining;
 use rocket::get;
-use rocket::http::{Cookie, Header, Status};
+use rocket::http::Status;
 use rocket::routes;
 use rocket::Response;
 
@@ -15,13 +18,13 @@ fn index() -> &'static str {
 #[get("/cb?<skey>")]
 fn cb(skey: String) -> Response<'static> {
     let mut res = Response::new();
-    res.set_header(Header::new("location", "http://localhost:3000"));
-    res.set_header(Cookie::new("skey", skey));
-    res.set_status(Status::SeeOther);
+
+    res.chain_set_header("location", "http://localhost:3000")
+        .chain_set_cookie("skey", skey)
+        .chain_set_status(Status::SeeOther);
 
     res
 }
 
-fn main() {
-    rocket::ignite().mount("/", routes![index, cb]).launch();
-}
+#[rustfmt::skip] // allow one-line fn decl
+fn main() { rocket::ignite().mount("/", routes![index, cb]).launch(); }

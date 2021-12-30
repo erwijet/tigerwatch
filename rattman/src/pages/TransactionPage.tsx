@@ -8,7 +8,8 @@ function TransactionPage(props: { spendingData: Transaction[], isLoading: boolea
         <>
             <Hero
                 isLoading={props.isLoading}
-                title={'$' + props.spendingData[0]?.balance?.toString() + ' left'}
+                balance={props.spendingData[0]?.balance ?? 0}
+                acctName={"Dining Dollars"}
             />
             <TransactionTable data={props.spendingData} isLoading={props.isLoading} />
             <TigerwatchNavBar />
