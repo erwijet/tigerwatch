@@ -5,7 +5,6 @@ import type { ReactElement } from 'react';
 
 import {
     Paid as PaidIcon,
-    BarChart as BarChartIcon,
     CreditScore as CreditScoreIcon
 } from '@mui/icons-material';
 
@@ -43,11 +42,6 @@ function TigerwatchNavBar() {
                 path: '/',
                 name: 'Transactions',
                 icon: <PaidIcon /> 
-            },
-            {
-                path: '/graph',
-                name: 'Graph',
-                icon: <BarChartIcon />
             },
             {
                 path: '/spendcard',
