@@ -1,11 +1,11 @@
 import './App.css';
-import React from 'react';
 import { useMediaQuery, CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import ReactGA from 'react-ga';
 
 import TigerwatchAppBar from './components/TigerwatchAppBar';
 import TransactionPage from './pages/TransactionPage';
@@ -15,9 +15,11 @@ import syncSpendingData from './util/spending';
 
 import type { Transaction } from 'tigerspend-types';
 
+ReactGA.initialize("UA-216007517-1");
+
 function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-    const theme = React.useMemo(
+    const theme = useMemo(
         () =>
             createTheme({
                 palette: {
@@ -41,7 +43,6 @@ function App() {
     }
 
     useEffect(() => {
-        console.log('current spending data...', { spendingData });
         handleRefresh();
     // eslint-disable-next-line 
     }, []);
