@@ -23,8 +23,7 @@
     },
     "eslintConfig": {
         "extends": [
-            "react-app",
-            "react-app/jest"
+            "react-app"
         ],
         "overrides": [
             {
@@ -60,5 +59,3 @@
         "react-scripts": "^5.0.0",
         "tigerspend-types": "^1.0.1",
         "typescript": "^4.5.4"
-    }
-}
