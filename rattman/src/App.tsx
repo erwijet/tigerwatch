@@ -9,7 +9,6 @@ import Cookies from 'js-cookie';
 
 import TigerwatchAppBar from './components/TigerwatchAppBar';
 import TransactionPage from './pages/TransactionPage';
-import GraphPage from './pages/GraphPage';
 import SpendCardPage from './pages/SpendCardPage';
 
 import syncSpendingData from './util/spending';
@@ -41,10 +40,10 @@ function App() {
         );
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         console.log('current spending data...', { spendingData });
         handleRefresh();
+    // eslint-disable-next-line 
     }, []);
 
     return (
@@ -62,12 +61,6 @@ function App() {
                                 />
                             }
                             path="/"
-                        />
-                        <Route
-                            element={
-                                <GraphPage {...{ isLoading, spendingData }} />
-                            }
-                            path="/graph"
                         />
                         <Route element={<SpendCardPage />} path="/spendcard" />
                     </Routes>
