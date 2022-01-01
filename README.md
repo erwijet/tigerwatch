@@ -5,7 +5,7 @@
 
 An easy way for RIT students to track and monitor dining dollar spending
 
-**NOTE**: You will need to enable popup's for your browser / tigerwatch.app. This is the same case for OAuth2 sign-ins. RIT's shibboleth sign in page will be launched in a new window. If you just see the screen spinning, make sure you have enabled pop-ups and then refresh.
+**NOTE**: Users will need an RIT Computer account to access tigerwatch because it pulls data from RIT's tigerspend.rit.edu platform. 
 
 ## Project Structure
 
@@ -16,7 +16,7 @@ An easy way for RIT students to track and monitor dining dollar spending
 |cavej|Type declarations for tigerwatch transaction data|
 |chell|A collection of useful dev tools, written in rust|
 
-TigerWatch is available as a progressive web app at [tigerwatch.app](https://tigerwatch.app)
+tigerwatch is available as a progressive web app at [tigerwatch.app](https://tigerwatch.app)
 
 ## Motivation
 Logging in to check your dining dollar balance is a *royal* pain. Not only is tigerspend.rit.edu hot trash on mobile, but there are *so* many buttons to click. Plus, its an entire website you have to navigate to. It is the reason you have a banking **app** on your phone instead of just using the banking website on your mobile browser.
