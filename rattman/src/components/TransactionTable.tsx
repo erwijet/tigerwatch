@@ -6,6 +6,7 @@ import {
     ListItemAvatar,
     ListItemText,
     ListItem,
+    Divider
 } from '@mui/material';
 import {
     Restaurant,
@@ -22,6 +23,7 @@ import {
 } from '@mui/icons-material';
 import { Fade } from 'react-reveal';
 
+import { formatBalance } from '../util/format';
 import Spinner from './Spinner';
 
 import type { Transaction } from 'tigerspend-types';
@@ -30,6 +32,22 @@ type TransactionListProps = {
     data: Transaction[];
     isLoading: boolean;
 };
+
+function getAvatarParentBySnakeCase(key: string): JSX.Element {
+    const bkColorDict: { [key: string]: string } = {
+        attach_money: '#38B92F',
+        shopping_cart: '#2A6ED1',
+        local_cafe: '#793607',
+        restaurant: '#AD241F',
+    };
+
+    let backgroundColor = bkColorDict[key] ?? '#0f0f0f';
+    return (
+        <Avatar sx={{ backgroundColor, color: '#ffffff' }}>
+            {getIconBySnakeCase(key)}
+        </Avatar>
+    );
+}
 
 function getIconBySnakeCase(key: string): JSX.Element {
     switch (key) {
@@ -68,31 +86,53 @@ export default function TransactionList(
     ) : (
         <Grid container justifyContent="center">
             <List sx={{ width: '80%', minWidth: 200 }}>
-                {props.data.map((transaction) => (
-                    <Fade bottom>
-                        <Paper sx={{ m: 2 }} elevation={8}>
-                            <ListItem>
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        {getIconBySnakeCase(
-                                            transaction.location.icon
-                                        )}
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={
-                                        (transaction.amount
-                                            .toString()
-                                            .charAt(0) != '-'
-                                            ? '+'
-                                            : '') + transaction.amount
-                                    }
-                                    secondary={transaction.location.name}
-                                />
-                            </ListItem>
-                        </Paper>
-                    </Fade>
-                ))}
+                {props.data
+                    // group transactions into subarrays by date 
+                    .reduce(
+                        (arr: any, t: Transaction) => {
+                            if (
+                                arr
+                                    .flat()
+                                    [
+                                        arr.flat().length - 1
+                                    ]?.date.toDateString() !=
+                                t.date.toDateString()
+                            )
+                                arr.push([t]);
+                            else arr[arr.length - 1].push(t);
+                            return arr;
+                        },
+                        [[]]
+                    )
+                    .filter((ts: Transaction[]) => ts.length != 0).map((ts: Transaction[]) => (
+                        <Fade bottom>
+                            <Paper elevation={6} sx={{ m: 1 }}>
+                                <ListItem>
+                                    <ListItemText primary={ <b>{ts[0].date.toDateString()}</b> } secondary={ 'Total Spent: ' + formatBalance(ts.map(t => t.amount).filter(a => a < 0).reduce((acc, a) => acc + a, 0) * (-1)) }/>
+                                </ListItem>
+                                <Divider />
+                                {ts.map((t) => (
+                                    <ListItem>
+                                        <ListItemAvatar>
+                                            {getAvatarParentBySnakeCase(
+                                                t.location.icon
+                                            )}
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={
+                                                ((t.amount < 0) ? '-' : '+') + formatBalance(Math.abs(t.amount))
+                                            }
+                                            secondary={t.location.name}
+                                        />
+                                    </ListItem>
+                                ))}
+                                {/* <Divider />
+                                <ListItem>
+                                    <ListItemText primary={ "Total Spent: " + ts.map(t => t.amount).reduce((acc, b) => acc + b) }/>
+                                </ListItem> */}
+                            </Paper>
+                        </Fade>
+                    ))}
             </List>
         </Grid>
     );
