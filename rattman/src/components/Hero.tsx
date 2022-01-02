@@ -2,21 +2,14 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { Slide } from 'react-reveal';
 
+import { formatBalance } from '../util/format';
+
 type HeroProps = {
     balance: number;
     acctName: string;
     isLoading: boolean;
 };
 
-/**
- * Formats `balance` to a traditional currency format
- *  
- * @param balance the balance to format
- * @returns the formated balance
- */
-function formatBalance(balance: number): string {
-    return `$${balance.toFixed(2).toString()}`;
-}
 
 const Hero = (props: HeroProps) => {
     return props.isLoading ? (
