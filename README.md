@@ -61,6 +61,7 @@ More specifically, the acct codes are as follows:
 |---|---|
 |4|Dining Dollars|
 |24|Voluntary Dining Dollars|
+|29|Rollover Dining Dollars|
 |1|Tiger Bucks|
 
 
