@@ -4,6 +4,6 @@
 _build/dev/rel/caroline/bin/caroline stop 2> /dev/null
 
 mix deps.get
-mix release
+mix release --overwrite
 
 _build/dev/rel/caroline/bin/caroline daemon
