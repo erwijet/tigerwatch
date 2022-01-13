@@ -62,6 +62,12 @@ defmodule Caroline.Endpoint do
     |> send_resp(302, "")
   end
 
+  get "/dev/auth" do
+    conn
+    |> put_resp_header("location", "https://tigerspend.rit.edu/login.php?wason=http://localhost:8000/cb")
+    |> send_resp(302, "")
+  end
+
   get "/callback" do
     skey = Map.get(conn.query_params, "skey")
 
