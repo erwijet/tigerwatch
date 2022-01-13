@@ -20,7 +20,10 @@ defmodule Caroline.Endpoint do
 
   get "/dev/data" do
     conn
-    |> put_resp_header("location", "https://tigerspend.rit.edu/login.php?wason=https://api.tigerwatch.app/dev/cb")
+    |> put_resp_header(
+      "location",
+      "https://tigerspend.rit.edu/login.php?wason=https://api.tigerwatch.app/dev/cb"
+    )
     |> send_resp(302, "")
   end
 
@@ -34,7 +37,7 @@ defmodule Caroline.Endpoint do
     else
       conn |> send_resp(400, "bad request")
     end
-  end  
+  end
 
   get "/data/:skey" do
     case Tigerspend.fetch(skey) do
@@ -64,7 +67,10 @@ defmodule Caroline.Endpoint do
 
   get "/dev/auth" do
     conn
-    |> put_resp_header("location", "https://tigerspend.rit.edu/login.php?wason=http://localhost:8000/cb")
+    |> put_resp_header(
+      "location",
+      "https://tigerspend.rit.edu/login.php?wason=http://localhost:8000/cb"
+    )
     |> send_resp(302, "")
   end
 

@@ -5,14 +5,14 @@ defmodule Caroline.Application do
   def start(_type, _args) do
     children = [
       {
-        Plug.Cowboy, 
-        scheme: :https, 
+        Plug.Cowboy,
+        scheme: :http,
         port: 443,
         plug: Caroline.Endpoint,
         options: [
-            otp_app: :caroline,
-            certfile: "priv/certs/fullchain.pem", 
-            keyfile: "priv/certs/privkey.pem", 
+          otp_app: :caroline,
+          certfile: "priv/certs/fullchain.pem",
+          keyfile: "priv/certs/privkey.pem"
         ]
       }
     ]
