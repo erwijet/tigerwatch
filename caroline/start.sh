@@ -4,6 +4,7 @@
 _build/dev/rel/caroline/bin/caroline stop 2> /dev/null
 
 mix deps.get
+mix format
 mix release
 
 _build/dev/rel/caroline/bin/caroline daemon
