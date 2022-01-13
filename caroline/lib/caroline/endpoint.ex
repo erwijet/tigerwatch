@@ -32,7 +32,7 @@ defmodule Caroline.Endpoint do
 
     unless skey == nil do
       conn
-      |> put_resp_header("location", "https://tigerwatch.app/data/" <> skey)
+      |> put_resp_header("location", "https://api.tigerwatch.app/data/" <> skey)
       |> send_resp(302, "")
     else
       conn |> send_resp(400, "bad request")
