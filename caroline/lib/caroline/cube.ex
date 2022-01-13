@@ -1,27 +1,13 @@
 defmodule Plug.Cube do
-    import Plug.Conn
+  import Plug.Conn
 
-    def init([]), do: false
-    def call(conn, _opts), do: put_resp_header(conn, "x-powered-by", "your companion cube <3")
-end
+  def init([]), do: false
 
-defmodule Plug.Cookies do
-    import Plug.Conn
-
-    def init([]), do: false
-    def call(conn, _opts), do: fetch_cookies(conn)
-end
-
-defmodule Plug.UrlParams do
-    import Plug.Conn
-
-    def init([]), do: false
-    def call(conn, _opts), do: fetch_query_params(conn)
-end
-
-defmodule Plug.Cors do
-    import Plug.Conn
-
-    def init([]), do: false
-    def call(conn, _opts), do: put_resp_header(conn, "access-control-allow-origin", "*")
+  def call(conn, _opts) do
+    conn
+    |> put_resp_header("x-powered-by", "your companion cube <3")
+    |> put_resp_header("access-control-allow-origin", "*")
+    |> fetch_cookies
+    |> fetch_query_params
+  end
 end
