@@ -37,5 +37,17 @@ declare module 'tigerspend-types' {
          * The resulting balance of the account, *after* the transaction
          */
         balance: number;
+        /**
+         * The corresponding account code for the transaction
+         */
+        acct: number;
     };
+
+    enum AccountCode {
+        ACCT_VIRTUAL_SUM = -1,
+        TIGER_BUCKS = 1,
+        STANDARD_DINING_DOLLARS = 4,
+        VOLUNTARY_DINING_DOLLARS = 24,
+        ROLLOVER_DINING_DOLLARS = 29,
+    }
 }
