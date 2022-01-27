@@ -40,7 +40,22 @@ defmodule Caroline.Endpoint do
   end
 
   get "/data/:skey" do
-    case Tigerspend.fetch(skey) do
+    conn
+    |> put_resp_header("location", "/aan/" <> skey <> "/-1")
+    |> send_resp(302, "")
+  end
+
+  get "/aan/-/:aan" do
+    conn
+    |> put_resp_header(
+      "location",
+      "/aan/" <> (Map.get(conn.cookies, "skey") || "nil") <> "/" <> aan
+    )
+    |> send_resp(302, "")
+  end
+
+  get "/aan/:skey/:aan" do
+    case Tigerspend.fetch(skey, aan) do
       {:ok, json} ->
         conn
         |> put_resp_content_type("application/json")
@@ -50,6 +65,11 @@ defmodule Caroline.Endpoint do
         conn
         |> put_resp_content_type("application/json")
         |> send_resp(401, "Unauthorized skey value.\nskey: " <> skey)
+
+      {:error, :invalid_aan} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(401, "Malformated aan number.\naan: " <> aan)
 
       {:error, _} ->
         send_fatal_resp(conn, "request to tigerspend.rit.edu responded with a non-:ok status")
