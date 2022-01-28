@@ -9,27 +9,11 @@ defmodule Caroline.Tigerspend.Parsing do
     |> Poison.decode!()
   end
 
-  # accepts in some csv multiline data and returns a parsed JSON string
-  # def csv_to_clean_json(csv, acct) do
-  #   csv
-  #   |> to_string
-  #   |> CSV.parse_string()
-  #   # take our list of lists and create a list of maps
-  #   |> Enum.map(&csv_transaction_to_map/1)
-  #   # apply formatting to data (and replace with nil if we don't match it)
-  #   |> Enum.map(&clean_transaction_map/1)
-  #   # drop nil values (since nil is falsy and the only other value is a map, we drop all falsy values here) 
-  #   |> Enum.filter(& &1)
-  #   # add account code
-  #   |> Enum.map(fn transaction -> transaction |> Map.put(:acct, acct) end)
-  #   # to JSON
-  #   |> Poison.encode!()
-  # end
-
+  # take a string of RAW csv (bitstring) from http repsonse and parse it into a list of maps
+  # we pass the account code here to flag each transaction with it so we know where they come from
+  # when it comes times to merge all transactions together and sort by date
   def parse_csv(csv, acct) do
-    IO.inspect(csv)
-
-    if csv == "No transaction history found for this date range",
+    if csv |> to_string =~ "No transaction history found for this date range",
       do: [],
       else:
         csv
@@ -38,11 +22,14 @@ defmodule Caroline.Tigerspend.Parsing do
         |> Enum.map(&csv_transaction_to_map(&1, acct))
   end
 
-  def sort_map_list_chrono(list) when is_list(list) do
-    Enum.map(list, &Map.get(&1, :date)) |> IO.inspect()
-    Enum.sort(list, &(DateTime.compare(Map.get(&2, :date), Map.get(&1, :date)) != :gt))
-  end
+  # accepts a list of maps and sorts them chonologicaly by :date from newest to oldest
+  def sort_map_list_chrono(list) when is_list(list),
+    do: list |> Enum.sort(&(DateTime.compare(Map.get(&2, :date), Map.get(&1, :date)) != :gt))
 
+  # parse a list of maps into a JSON string representation
+  # this function also "cleans" the data. This means attaching additional information 
+  # about the transactions as specified in config/locations.json as well as dropping non-included transactions,
+  # such as various admin_tasks
   def map_list_to_json(list) when is_list(list) do
     list
     |> Enum.map(&clean_transaction_map/1)
@@ -65,6 +52,8 @@ defmodule Caroline.Tigerspend.Parsing do
     end
   end
 
+  # "clean" a transaction map. This entails pulling from config/locations.json to add information such as
+  # location category, common name, icon, and whether to even include it in the final list or not. This step
   defp clean_transaction_map(transaction_map) when is_map(transaction_map) do
     load_config()
     # compile each regular expression
