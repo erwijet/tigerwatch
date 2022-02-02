@@ -1,8 +1,0 @@
-# netlify is a little baby and needs us to allowlist all routes
-# since we handle them manually with react-router
-
-/           /index.html       200
-/graph      /index.html       200
-/spendcard  /index.html       200
-
-/*          /                 200
