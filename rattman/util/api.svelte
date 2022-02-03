@@ -1,7 +1,22 @@
 <script lang="ts" context="module">
-    import type { Transaction, AccountCode } from 'tigerspend-types';
+    import type {
+        RawTransaction,
+        Transaction,
+        TransactionLocation,
+        AccountCode,
+    } from 'tigerspend-types';
     import cookie from 'cookie';
     import { encodeAAN } from './aan.svelte';
+
+    function parseTransactionData(data: RawTransaction[]): Transaction[] {
+        return data.map<Transaction>((unparsed) => ({
+            acct: Number.parseInt(unparsed.acct),
+            balance: Number.parseFloat(unparsed.balance),
+            amount: Number.parseFloat(unparsed.balance),
+            date: new Date(unparsed.date),
+            location: unparsed.location,
+        }));
+    }
 
     export async function requestSpendingData(
         accts: AccountCode[]
@@ -16,13 +31,13 @@
         if (typeof query != 'number') query = encodeAAN(query);
         const { skey } = cookie.parse(document.cookie) ?? { skey: '' };
         const apiRes = await fetch(
-            `http://localhost:5050/aan/${skey}/${query}`
+            `http://api.tigerwatch.app/aan/${skey}/${query}`
         );
 
         if (apiRes.status == 401)
-            window.location.href = 'http://localhost:5050/dev/auth';
+            window.location.href = 'http://api.tigerwatch.app/auth';
         else if (apiRes.status == 200)
-            return (await apiRes.json()) as Transaction[];
+            return parseTransactionData(await apiRes.json());
         else throw 'api returned authed but not ok!';
     }
 </script>

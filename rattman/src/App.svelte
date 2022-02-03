@@ -2,28 +2,31 @@
     import TopAppBar, {
         Row,
         Section,
-        Title,
+        Title as AppBarTitle,
         AutoAdjust,
         TopAppBarComponentDev,
     } from '@smui/top-app-bar';
+
+    import Drawer, {
+        Content,
+        Header,
+        Title as DrawerTitle,
+    } from '@smui/drawer';
+
+    import List, { Item, Text } from '@smui/list';
     import IconButton from '@smui/icon-button';
-    import Tab, { Icon, Label } from '@smui/tab';
-    import TabBar from '@smui/tab-bar';
 
-    const tabs = [
-        {
-            k: 1,
-            icon: 'code',
-            label: 'Code',
-        },
-        {
-            k: 2,
-            icon: 'code',
-            label: 'Code',
-        },
-    ];
+    import HomePage from './pages/Home.svelte';
+    import SettingsPage from './pages/Settings.svelte';
+    import AboutPage from './pages/About.svelte';
 
-    let active = tabs[0];
+    let drawerOpen = false;
+    let drawerPage = 'home';
+
+    function drawerSetPage(val: string) {
+        drawerPage = val;
+        drawerOpen = false;
+    }
 
     let topAppBar: TopAppBarComponentDev;
 </script>
@@ -32,13 +35,17 @@
     <TopAppBar bind:this={topAppBar} variant="standard">
         <Row>
             <Section>
-                <IconButton class="material-icons">menu</IconButton>
-                <Title>Tigerwatch</Title>
+                <IconButton
+                    class="material-icons"
+                    on:click={() => (drawerOpen = !drawerOpen)}>menu</IconButton
+                >
+                <AppBarTitle>Tigerwatch</AppBarTitle>
             </Section>
             <Section align="end" toolbar>
                 <IconButton class="material-icons" aria-label="Download"
                     >file_download</IconButton
                 >
+
                 <IconButton class="material-icons" aria-label="Print this page"
                     >print</IconButton
                 >
@@ -49,20 +56,71 @@
             </Section>
         </Row>
     </TopAppBar>
-    <AutoAdjust sx={{ margin: '6px' }} {topAppBar}>
-        <h1>Hello!</h1>
+
+    <AutoAdjust {topAppBar} class="app-content">
+        {#if drawerPage == 'home'}
+            <HomePage />
+        {/if}
+
+        {#if drawerPage == 'settings'}
+            <SettingsPage />
+        {/if}
+
+        {#if drawerPage == 'about'}
+            <AboutPage />
+        {/if}
     </AutoAdjust>
-    <div class="bottom-navbar">
-        <TabBar {tabs} let:tab key={(tab) => tab.k} bind:active>
-            <Tab
-                {tab}
-                stacked={true}
-                indicatorSpanOnlyContent={true}
-                tabIndicator$transition="fade"
-            >
-                <Icon class="material-icons">{tab.icon}</Icon>
-                <Label>{tab.label}</Label>
-            </Tab>
-        </TabBar>
+
+    <div class="drawer-container">
+        <Drawer variant="dismissible" bind:open={drawerOpen}>
+            <Header>
+                <DrawerTitle>Tigerwatch</DrawerTitle>
+            </Header>
+            <Content>
+                <List>
+                    <Item
+                        href="javascript:void(0)"
+                        on:click={() => drawerSetPage('home')}
+                        activated={drawerPage == 'home'}
+                    >
+                        <Text>Home</Text>
+                    </Item>
+                    <Item
+                        href="javascript:void(0)"
+                        on:click={() => drawerSetPage('settings')}
+                        activated={drawerPage == 'settings'}
+                    >
+                        <Text>Settings</Text>
+                    </Item>
+                    <Item
+                        href="javascript:void(0)"
+                        on:click={() => drawerSetPage('about')}
+                        activated={drawerPage == 'about'}
+                    >
+                        <Text>About</Text>
+                    </Item>
+                </List>
+            </Content>
+        </Drawer>
     </div>
 </main>
+
+<style>
+    .bottom-navbar {
+        position: absolute;
+        bottom: 0px;
+        width: 100vw;
+    }
+
+    .app-content {
+        overflow: auto;
+        padding: 16px;
+        height: 100%;
+        box-sizing: border-box;
+    }
+
+    /* These classes are only needed because the
+    drawer is in a container on the page. */
+    .drawer-container {
+    }
+</style>

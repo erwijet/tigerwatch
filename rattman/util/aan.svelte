@@ -1,5 +1,7 @@
-<script lang='ts' context='module'>
-    import { AccountCode, Transaction } from 'tigerspend-types';
+<script lang="ts" context="module">
+    import { action_destroyer } from 'svelte/internal';
+
+    import { AccountCode } from 'tigerspend-types';
 
     /**
      * encode a set of {@see AccountCode} values into a single,
@@ -10,9 +12,11 @@
      * @param accts the set of AccountCodes to encode
      */
     export function encodeAAN(accts: AccountCode[]): number {
+        if (accts.includes(AccountCode.ACCT_VIRTUAL_SUM)) return ~(0 << 0);
+
         let aan = 0;
         for (let acct of accts) {
-            aan |= acct;
+            aan |= 1 << acct;
         }
 
         return aan;
@@ -29,7 +33,7 @@
     export function decodeAAN(aan: number): AccountCode[] {
         const accts = [];
 
-        // ~(0 << 0) is just -1. note how ~(0 << 0) | (1 << n) = ~(0 << ) for 0 <= n <= 63
+        // ~(0 << 0) is just -1. note how ~(0 << 0) | (1 << n) = ~(0 << 0) for 0 <= n <= 31
         if (aan == ~(0 << 0)) return [AccountCode.ACCT_VIRTUAL_SUM];
         for (let i of Object.values(AccountCode)) {
             i = i as number;

@@ -57,11 +57,3 @@ button:not(:disabled):active {
 button:focus {
     border-color: #666;
 }
-
-/*************/
-
-.bottom-navbar {
-    position: absolute;
-    bottom: 0px;
-    width: 100vw;
-}
