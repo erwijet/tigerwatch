@@ -35,7 +35,7 @@ If you check out the production enviorment, you will notice that it looks rather
 	- [X] Refresh button to refresh spending data
 	- [ ] Account button? 
 - [ ] Add some sort of drop down to toggle between accounts (dining dollars / tigerbucks, etc).
-    - [ ] Possible aggregation of *all* accounts into one account, where each transaction has an attached account?
+    - [X] Possible aggregation of *all* accounts into one account, where each transaction has an attached account?
 
 ## The Nuts, Bolts, and Magic
 
