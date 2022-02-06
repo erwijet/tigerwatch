@@ -1,5 +1,5 @@
-declare module 'tigerspend-types' {
-    /**
+declare module '@tigerwatch/types' {
+    /*
      * Describes a place on campus a transaction could occur
      */
     type TransactionLocation = {
@@ -18,7 +18,9 @@ declare module 'tigerspend-types' {
     };
 
     /**
-     * Describes a transaction
+     * Describes a (parsed) transaction
+     *
+     * For unparsed transactions (directly from API), refer to {@see RawTransaction}.
      */
     type Transaction = {
         /**
@@ -43,11 +45,29 @@ declare module 'tigerspend-types' {
         acct: number;
     };
 
-    enum AccountCode {
-        ACCT_VIRTUAL_SUM = -1,
-        TIGER_BUCKS = 1,
-        STANDARD_DINING_DOLLARS = 4,
-        VOLUNTARY_DINING_DOLLARS = 24,
-        ROLLOVER_DINING_DOLLARS = 29,
-    }
+    /**
+     * represents an unparsed {@see Transaction}, where each attribute is still a string
+     */
+    type RawTransaction = {
+        /**
+         * The date (currently not time) a transaction occured
+         */
+        date: string;
+        /**
+         * The location of the transaction
+         */
+        location: TransactionLocation;
+        /**
+         * The change to the balance the transaction imposed (this is always negative since deposits are excluded)
+         */
+        amount: string;
+        /**
+         * The resulting balance of the account, *after* the transaction
+         */
+        balance: string;
+        /**
+         * The corresponding account code for the transaction
+         */
+        acct: string;
+    };
 }

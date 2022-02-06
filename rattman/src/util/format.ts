@@ -1,3 +1,6 @@
+import type { Transaction } from '@tigerwatch/types';
+import { AccountCode } from '@tigerwatch/acct';
+
 /**
  * Formats `balance` to a traditional currency format
  *
@@ -6,4 +9,15 @@
  */
 export function formatBalance(balance: number): string {
     return `$${balance.toFixed(2).toString()}`;
+}
+
+export function selectAndSum(data: Transaction[], aan: number): number {
+    return data.reduce((sum, t) => {
+        if (aan & (1 << t.acct)) {
+            sum += t.balance;
+            aan &= ~(1 << t.acct);
+        }
+
+        return sum;
+    }, 0);
 }

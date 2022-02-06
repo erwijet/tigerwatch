@@ -11,9 +11,9 @@ import TigerwatchAppBar from './components/TigerwatchAppBar';
 import TransactionPage from './pages/TransactionPage';
 import SpendCardPage from './pages/SpendCardPage';
 
-import syncSpendingData from './util/spending';
+import syncSpendingData, { refreshData } from './util/spending';
 
-import type { Transaction } from 'tigerspend-types';
+import type { Transaction } from '@tigerwatch/types';
 
 ReactGA.initialize("UA-216007517-1");
 
@@ -35,16 +35,15 @@ function App() {
     const [isLoading, setIsLoading] = useState(true);
 
     function handleRefresh() {
+        refreshData(setIsLoading);
+    }
+
+    useEffect(() => {
         syncSpendingData(
             Cookies.get('skey') ?? '',
             setIsLoading,
             setSpendingData
         );
-    }
-
-    useEffect(() => {
-        handleRefresh();
-    // eslint-disable-next-line 
     }, []);
 
     return (

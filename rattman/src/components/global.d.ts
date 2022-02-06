@@ -1,2 +1,4 @@
-// yeah... so no one has made a @types/react-reveal pkg and I am too lazy to do it myself lol
+// lame :/
+
 declare module 'react-reveal';
+declare module 'js-cookie';
