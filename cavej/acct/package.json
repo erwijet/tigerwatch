@@ -1,7 +1,6 @@
 {
     "name": "@tigerwatch/acct",
-    "version": "1.0.0",
-    "type": "module",
+    "version": "1.0.1",
     "author": "Tyler Holewinski",
     "license": "MIT",
     "repository": {
