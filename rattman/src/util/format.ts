@@ -1,5 +1,4 @@
 import type { Transaction } from '@tigerwatch/types';
-import { AccountCode } from '@tigerwatch/acct';
 
 /**
  * Formats `balance` to a traditional currency format

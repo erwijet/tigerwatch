@@ -91,7 +91,7 @@ function getAcctNameByCode(code: number): string {
         case AccountCode.TIGER_BUCKS:
             return 'Tiger Bucks';
         default:
-            throw `could not match account code ${code}`;
+            throw new Error(`could not match account code ${code}`);
     }
 }
 
