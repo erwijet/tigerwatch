@@ -9,6 +9,7 @@ export default async function syncSpendingData(
     setSpendingData: ReactStateSetter<Transaction[]>
 ): Promise<void> {
     setIsLoading(true);
+    skey ||= '-';
 
     const res = await fetch(`https://api.tigerwatch.app/aan/${skey}/-1`);
 
