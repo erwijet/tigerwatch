@@ -6,7 +6,7 @@ defmodule Caroline.Application do
     children = [
       {
         Plug.Cowboy,
-        scheme: :http,
+        scheme: :https,
         port: 443,
         plug: Caroline.Endpoint,
         options: [

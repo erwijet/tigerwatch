@@ -6,7 +6,8 @@ import {
     ListItemAvatar,
     ListItemText,
     ListItem,
-    Divider
+    Divider,
+    Chip
 } from '@mui/material';
 import {
     Restaurant,
@@ -26,7 +27,8 @@ import { Fade } from 'react-reveal';
 import { formatBalance } from '../util/format';
 import Spinner from './Spinner';
 
-import type { Transaction } from 'tigerspend-types';
+import type { Transaction } from '@tigerwatch/types';
+import { AccountCode } from '@tigerwatch/acct';
 
 type TransactionListProps = {
     data: Transaction[];
@@ -78,6 +80,21 @@ function getIconBySnakeCase(key: string): JSX.Element {
     }
 }
 
+function getAcctNameByCode(code: number): string {
+    switch (code) {
+        case AccountCode.ROLLOVER_DINING_DOLLARS:
+            return 'Rollover';
+        case AccountCode.STANDARD_DINING_DOLLARS:
+            return 'Meal Plan';
+        case AccountCode.VOLUNTARY_DINING_DOLLARS:
+            return 'Voluntary';
+        case AccountCode.TIGER_BUCKS:
+            return 'Tiger Bucks';
+        default:
+            throw `could not match account code ${code}`;
+    }
+}
+
 export default function TransactionList(
     props: TransactionListProps
 ): JSX.Element {
@@ -85,7 +102,7 @@ export default function TransactionList(
         <Spinner />
     ) : (
         <Grid container justifyContent="center">
-            <List sx={{ width: '80%', minWidth: 200 }}>
+            <List sx={{ width: '90%', minWidth: 200 }}>
                 {props.data
                     // group transactions into subarrays by date 
                     .reduce(
@@ -112,7 +129,9 @@ export default function TransactionList(
                                 </ListItem>
                                 <Divider />
                                 {ts.map((t) => (
-                                    <ListItem>
+                                    <ListItem secondaryAction={
+                                        <Chip label={getAcctNameByCode(t.acct)} />
+                                    }>
                                         <ListItemAvatar>
                                             {getAvatarParentBySnakeCase(
                                                 t.location.icon
@@ -122,14 +141,10 @@ export default function TransactionList(
                                             primary={
                                                 ((t.amount < 0) ? '-' : '+') + formatBalance(Math.abs(t.amount))
                                             }
-                                            secondary={t.location.name}
+                                            secondary={t.location.name  }
                                         />
                                     </ListItem>
                                 ))}
-                                {/* <Divider />
-                                <ListItem>
-                                    <ListItemText primary={ "Total Spent: " + ts.map(t => t.amount).reduce((acc, b) => acc + b) }/>
-                                </ListItem> */}
                             </Paper>
                         </Fade>
                     ))}

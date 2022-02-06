@@ -6,6 +6,7 @@
         "@emotion/styled": "^11.6.0",
         "@mui/icons-material": "^5.2.5",
         "@mui/material": "^5.2.6",
+        "@tigerwatch/acct": "^1.0.0",
         "js-cookie": "^3.0.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
@@ -53,12 +54,14 @@
         ]
     },
     "devDependencies": {
-        "@types/js-cookie": "^3.0.0",
+        "@tigerwatch/types": "^1.0.0",
+        "@types/js-cookie": "^3.0.1",
         "@types/node": "^17.0.5",
         "@types/react": "^17.0.38",
         "@types/react-dom": "^17.0.11",
+        "@types/react-ga": "^2.3.0",
+        "@types/react-router-dom": "^5.3.3",
         "react-scripts": "^5.0.0",
-        "tigerspend-types": "^1.0.1",
         "typescript": "^4.5.4"
     }
 }

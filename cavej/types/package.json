@@ -1,5 +1,5 @@
 {
-    "name": "tigerspend-types",
+    "name": "@tigerwatch/types",
     "version": "1.0.1",
     "type": "module",
     "author": "Tyler Holewinski",
