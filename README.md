@@ -1,4 +1,5 @@
 
+
 # TigerWatch
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/c5558385-9418-4ee3-8a0f-aa65e4083869/deploy-status)](https://app.netlify.com/sites/distracted-pare-04fe9c/deploys)
@@ -11,12 +12,12 @@ An easy way for RIT students to track and monitor dining dollar spending
 
 |Name|Description|
 |---|---|
-|rattman|The React PWA client|
+|rattman|The React client|
 |caroline|The tigerspend.rit.edu interop server written in elixir|
-|cavej|Type declarations for tigerwatch transaction data|
-|chell|A collection of useful dev tools, written in rust|
+|cavej|NPM packages published externally|
+|chell|A collection of useful dev tools, written in Rust|
 
-tigerwatch is available as a progressive web app at [tigerwatch.app](https://tigerwatch.app)
+Tigerwatch is available as a progressive web app at [tigerwatch.app](https://tigerwatch.app)
 
 ## Motivation
 Logging in to check your dining dollar balance is a *royal* pain. Not only is tigerspend.rit.edu hot trash on mobile, but there are *so* many buttons to click. Plus, its an entire website you have to navigate to. It is the reason you have a banking **app** on your phone instead of just using the banking website on your mobile browser.
@@ -25,7 +26,7 @@ Also, ITS laughed at my request to gain shibboleth access even though I *work fo
 
 ## Future Plans
 
-If you check out the production enviorment, you will notice that it looks rather not-great on desktop. I am not a UX designer by any means, but I am slowly working on implemented features. Feel free to add to this list of features or open an issue :D
+If you check out the production environment, you will notice that it looks rather not-great on desktop. I am not a UX designer by any means, but I am slowly working on implemented features. Feel free to add to this list of features or open an issue :D
 
 - [ ] D3 graph integration
 	- [ ] Activity by time
@@ -33,7 +34,6 @@ If you check out the production enviorment, you will notice that it looks rather
 - [ ] Actally get NavBar widgets to do something
 	- [ ] Search bar to search transactions
 	- [X] Refresh button to refresh spending data
-	- [ ] Account button? 
 - [ ] Add some sort of drop down to toggle between accounts (dining dollars / tigerbucks, etc).
     - [X] Possible aggregation of *all* accounts into one account, where each transaction has an attached account?
 
@@ -45,7 +45,7 @@ If you check out the production enviorment, you will notice that it looks rather
 
 Here is some precursor information about how data is accessed at tigerspend.rit.edu (not to be confused with tiger**watch**).
 
-Spending data is avalible in CSV format at `tigerspend.rit.edu/statementdetail.php` with the following URL parameters:
+Spending data is available in CSV format at `tigerspend.rit.edu/statementdetail.php` with the following URL parameters:
 
    |parameter|description|
    |---|---|
@@ -68,24 +68,45 @@ More specifically, the acct codes are as follows:
 So, how do we get an `skey` value? `skey`s are administered by the `tigerspend.rit.edu/login.php` endpoint. This endpoint takes the following parameters:
 |parameter|description|
 |---|---|
-|skey|The session ID respresenting the users' session|
+|skey|The session ID representing the users' session|
 |wason|The link to redirect the user to after logging in|
 
 If the skey is blank or invalid, one will attempted to be generated and appended to the url before redirecting to the path specified by `wason`. This is done by checking the value of the `SHIBSESSION` cookie in the header of the request. Now, if the user has already logged into something else with shibboleth then we *might* have a shot in the dark of having this cookie already set. But most likely it will either be missing or invalid. If this is the case (missing or invalid `SHIBSESSION`) the user will *first* be redirected to the Shibboleth login page for tigerspend, and then redirected to the `wason` after they have signed in.
 
 What this means is that if we can point that `wason` to a callback endpoint that we host, we can read and store the skey to make as many attempts as we want before the `skey` is expired, and we generate a new one again. The issue arises, however, the client will not be making a request to tigerspend in their browser, our server will be making the request. This raises the question of how will the user ever see the sign in page? This is how the flow of our server is constructed.
 
+### AAN?
+
+Throughout this project, you may see a reference to something called an `aan`. This stands for aggregate account number. It is as way that we can express a subset of accounts in one number. This is useful if you wish to query only certain accounts-- limiting the total reponse to only the relevant accounts can save massive bandwidth and  make sure we don't end up like `ondemand.rit.edu`.
+
+The encoding algorithm for an AAN is as follows
+```typescript
+function encodeAAN(accts: number[]): number {
+	let aan = 0;
+	for (let acct of accts) {
+		aan |= (1 << acct);
+	}
+	return aan;
+}
+```
+
+This is just a very fancy way of saying that each `1` in the aan bitstring corresponds to an account we wish to select. For example, a theoretical aan requesting accounts 7, 2, and 4 would be expressed as: `1001010`. As long as each account falls below the number 32, this methodology will hold.
+
+Note, however, that in javascript `~0 == -1`. This is to say that the number `-1` represents a bitstring where each bit is `1`. As such, we use `-1` as something called a `VIRTUAL_ACCOUNT_SUM` constant, denoting that we wish to select *all* possible accounts available. When asked to encode `-1` as an account code into an AAN, the implemented encoding algorithm will simply return `-1` as the AAN. The same will happen in reverse we as to decode `-1`. The reasoning behind this is because RIT may introduce some new account with a new account number. This way that account is automatically included in the request, instead of having to use a different AAN.
+
+AAN's are a new addition to tigerwatch, moving away from the previous `/data` route to a `/aan` route. Currently, any requests that point to `/data` will be redirected to `/aan/-/-1` (see api documentation).
+
 ### Data flow from Tigerspend to Tigerwatch
 
 When unauthenticated:
 
-1. `tigerwatch.app` -GET-> `api.tigerwatch.app/data`
-2. `api.tigerwatch.app/data` -302-> `api.tigerwatch.app/data/<skey>` where `<skey>` is pulled from the request cookies.
-3. `api.tigerwatch.app/data/<skey>` -GET-> `tigerspend.rit.edu/statmentdetail?skey=<skey>`
+1. `tigerwatch.app` -GET-> `api.tigerwatch.app/-/-1`
+2. `api.tigerwatch.app/-/-1` -302-> `api.tigerwatch.app/aan/<skey>/-1` where `<skey>` is pulled from the request cookies.
+3. `api.tigerwatch.app/aan/<skey>/-1` -GET-> `tigerspend.rit.edu/statmentdetail?skey=<skey>`
 4. `tigerspend.rit.edu/statmentdetail?skey=<skey>` -302-> `tigerspend.rit.edu/login.php?wason=/statementdetail`
-5. `tigerwatch.app` <-401- `api.tigerwatch.app/data/<skey>`
+5. `tigerwatch.app` <-401- `api.tigerwatch.app/<skey>/-1`
 
-Tigerspend 302's request to shib server for authentication, which the server then tells the client by responding with `401`. The reason we don't just follow this shib redirect is because `tigerspend.rit.edu/statementdetail` sets the `wason` of the shib auth to `/statmentdetail`, which means we will not be able to capture it for future use. Instead, we employ our own authentication routine:
+Tigerspend 302's the request to the shib server for authentication, which the server then tells the client by responding with `401`. The reason we don't just follow this shib redirect is because `tigerspend.rit.edu/statementdetail` sets the `wason` of the shib auth to `/statmentdetail`, which means we will not be able to capture it for future use. Instead, we employ our own authentication routine:
 
 1. `tigerwatch.app` navigates to `api.tigerwatch.app/auth`
 2. `api.tigerwatch.app/auth` -302-> `tigerspend.rit.edu/login?wason=api.tigerwatch.app/callback`
@@ -96,12 +117,12 @@ Tigerspend 302's request to shib server for authentication, which the server the
 
 Tigerwatch is now reloaded, and begins its data fetch routine again. This time, with a valid `skey`:
 
-1. `tigerwatch.app` -GET-> `api.tigerwatch.app/data`
-2. `api.tigerwatch.app/data` -302-> `api.tigerwatch.app/data/<skey>`
-3. `api.tigerwatch.app/data/<skey>` -GET-> `tigerspend.rit.edu/statmentdetail?skey=<skey>`
-4. `api.tigerwatcg.app/data<skey>` <-200- **Raw CSV Spending Data**
-5. api.tigerwatch.app matches and formats against locationspec file, `locations.json` (see below in 'data transformation'), and converts to JSON
-6. `tigerwatch.app` <-200- **The relevent, JSON Spending Data**
+1. `tigerwatch.app` -GET-> `api.tigerwatch.app/-/<aan>`
+2. `api.tigerwatch.app/<skey>/<aan>` -302-> `api.tigerwatch.app/<skey>/<aan>`
+3. `api.tigerwatch.app/aan/<skey>/<aan>` -GET-> `tigerspend.rit.edu/statmentdetail?skey=<skey>`
+4. `api.tigerwatch.app/aan/<skey>/<aan>` <-200- **Raw CSV Spending Data**
+5. api.tigerwatch.app pulls specified accounts specified by `aan`, then  matches and formats against locationspec file, `locations.json` (see below in 'data transformation'), and converts to JSON
+6. `tigerwatch.app` <-200- **The relevant, JSON Spending Data**
 
 ### Data Transformation
 
@@ -176,4 +197,22 @@ The way we do this is by using a `locations.json` file to contain an array of re
 ]
 ```
 
-so yeah, that's about it 😁.
+## Extended API Documentation
+Do you want to use `api.tigerwatch.app` for your own project? Well then this is the guide for you!
+
+|Route|Possible Statuses|Description|
+|---|---|---|
+|/|200|Responds with `yuh`|
+|/data|302|Redirects to /aan/-/-1 (deprecated)|
+|/data/`<skey>`|302|Redirects to /aan/`<skey>`/-1 (deprecated)
+|/auth|302|Redirects to https://tigerspend.rit.edu/login.php?wason=https://api.tigerwatch.app/callback
+|/callback?skey=`<skey>`|302|Sets `<skey>` as a cookie on *.tigerwatch.app and redirects to tigerwatch.app
+|/aan/-/`<aan>`|302|Redirects to /aan/`<skey>`/`<aan>` where `<skey>` is pulled from the request cookie, `skey`
+|/aan/`<skey>`/`<aan>`|200, 401|Pulls accounts specified by the `<aan>` formats against `locations.json`, and responds with spending data for the user identified and authed by `<skey>`. If `<skey>` is expired/invalid, respond with 401.
+|/dev/auth|302|Redirects to https://tigerspend.rit.edu/login.php?wason=https://localhost:8000/cb (see `chell/lcmm` for more information)
+|/dev/data|302|Redirects to https://tigerspend.rit.edu/login.php?wason=https://api.tigerwatch.app/dev/cb
+|/dev/cb?skey=`<skey>`|302|Redirects to /data/`<skey>`
+
+Please note that any route on `/dev` should *not* be used for production as they are subject to change functionality and/or be removed entirely.
+
+so yeah, that's about it 😁
