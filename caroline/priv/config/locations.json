@@ -79,15 +79,15 @@
         "category": "dining_hall"
     },
     {
-        "name": "Salsarita's",
-        "regex": "Global\\sVillage\\sCantina\\s&\\sGrille\\s3.*",
-        "icon": "restaurant",
+        "name": "Noodle Bar",
+        "regex": "Global\\sVillage\\sCantina\\s&\\sGrille\\s([1-2]|[4-9]).*",
+        "icon": "ramen_dining",
         "category": "dining"
     },
     {
-        "name": "Noodle Bar",
-        "regex": "Global\\sVillage\\sCantina\\s&\\sGrille\\s[^3].*",
-        "icon": "ramen_dining",
+        "name": "Salsarita's",
+        "regex": "Global\\sVillage\\sCantina\\s&\\sGrille\\s.*",
+        "icon": "restaurant",
         "category": "dining"
     },
     {
