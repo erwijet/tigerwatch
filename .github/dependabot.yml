@@ -9,6 +9,7 @@ updates:
     directory: "/rattman"
     schedule:
       interval: "daily"
+    versioning-strategy: increase
   - package-ecosystem: "mix"
     directory: "/caroline"
     schedule:
