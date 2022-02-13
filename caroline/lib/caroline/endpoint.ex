@@ -108,7 +108,11 @@ defmodule Caroline.Endpoint do
   end
 
   match _ do
-    send_resp(conn, 404, "not found, but i'm still alive")
+    Caroline.Lyrics.get
+    |> (fn 
+        {:ok, lyrics} -> send_resp(conn, 404, "not found, but i'm still alive \n\n" <> lyrics)
+        _ -> send_fatal_resp(conn, "It's a 404 but we have bigger fish to fry-- we couldn't read the lyrics!")
+    end).()
   end
 
   defp send_fatal_resp(conn, data) do
