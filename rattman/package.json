@@ -7,7 +7,7 @@
         "@emotion/styled": "^11.6.0",
         "@mui/icons-material": "^5.2.5",
         "@mui/material": "^5.2.6",
-        "@tigerwatch/acct": "^1.0.0",
+        "@tigerwatch/acct": "^1.0.1",
         "js-cookie": "^3.0.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
