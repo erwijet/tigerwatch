@@ -1,0 +1,23 @@
+{
+  "name": "@tigerwatch/aan",
+  "version": "1.0.1",
+  "description": "Provide AAN encoding and decoding functionality",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erwijet/tigerwatch.git"
+  },
+  "keywords": [
+    "tigerwatch",
+    "aan"
+  ],
+  "author": "Tyler Holewinski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/erwijet/tigerwatch/issues"
+  },
+  "homepage": "https://github.com/erwijet/tigerwatch#readme",
+  "dependencies": {
+    "@tigerwatch/acct": "^1.0.1"
+  }
+}

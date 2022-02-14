@@ -7,7 +7,7 @@ import {
     ListItemText,
     ListItem,
     Divider,
-    Chip
+    Chip,
 } from '@mui/material';
 import {
     Restaurant,
@@ -22,7 +22,9 @@ import {
     LunchDining,
     RamenDining,
 } from '@mui/icons-material';
-import { Fade } from 'react-reveal';
+import { animations, motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { useEffect } from 'react';
 
 import { formatBalance } from '../util/format';
 import Spinner from './Spinner';
@@ -95,6 +97,66 @@ function getAcctNameByCode(code: number): string {
     }
 }
 
+function TransctionCard(props: { transactions: Transaction[] }): JSX.Element {
+    const { transactions: ts } = props;
+
+    // const { ref, inView } = useInView();
+    const anim = useAnimation();
+
+    useEffect(() => {
+        // if (inView) {
+        //     anim.start({
+        //         y: 0,
+        //         opacity: 1,
+        //         transition: {
+        //             type: 'tween',
+        //             duration: 0.8
+        //         },
+        //     });
+        // } 
+    }, []);
+
+    return (
+        <motion.div animate={{ y: 0, opacity: 1 }} initial={{ y: 200, opacity: 0 }}>
+            <Paper elevation={6} sx={{ m: 1 }}>
+                <ListItem>
+                    <ListItemText
+                        primary={<b>{ts[0].date.toDateString()}</b>}
+                        secondary={
+                            'Total Spent: ' +
+                            formatBalance(
+                                ts
+                                    .map((t) => t.amount) // select amount
+                                    .filter((a) => a < 0) // drop all positive values (deposits)
+                                    .reduce((acc, a) => acc + a, 0) * -1 // sum amounts (and make negative)
+                            )
+                        }
+                    />
+                </ListItem>
+                <Divider />
+                {ts.map((t) => (
+                    <ListItem
+                        secondaryAction={
+                            <Chip label={getAcctNameByCode(t.acct)} />
+                        }
+                    >
+                        <ListItemAvatar>
+                            {getAvatarParentBySnakeCase(t.location.icon)}
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary={
+                                (t.amount < 0 ? '-' : '+') +
+                                formatBalance(Math.abs(t.amount))
+                            }
+                            secondary={t.location.name}
+                        />
+                    </ListItem>
+                ))}
+            </Paper>
+        </motion.div>
+    );
+}
+
 export default function TransactionList(
     props: TransactionListProps
 ): JSX.Element {
@@ -104,7 +166,7 @@ export default function TransactionList(
         <Grid container justifyContent="center">
             <List sx={{ width: '90%', minWidth: 200 }}>
                 {props.data
-                    // group transactions into subarrays by date 
+                    // group transactions into subarrays by date
                     .reduce(
                         (arr: any, t: Transaction) => {
                             if (
@@ -116,38 +178,29 @@ export default function TransactionList(
                                 t.date.toDateString()
                             )
                                 arr.push([t]);
-                            else arr[arr.length - 1].push(t);
+                            // if there exists no other sorted transaction with a matching date, create a new array with the current transaction
+                            else arr[arr.length - 1].push(t); // otherwise, append the current transaction to the array with the matching date
                             return arr;
                         },
                         [[]]
                     )
-                    .filter((ts: Transaction[]) => ts.length != 0).map((ts: Transaction[]) => (
-                        <Fade bottom>
-                            <Paper elevation={6} sx={{ m: 1 }}>
-                                <ListItem>
-                                    <ListItemText primary={ <b>{ts[0].date.toDateString()}</b> } secondary={ 'Total Spent: ' + formatBalance(ts.map(t => t.amount).filter(a => a < 0).reduce((acc, a) => acc + a, 0) * (-1)) }/>
-                                </ListItem>
-                                <Divider />
-                                {ts.map((t) => (
-                                    <ListItem secondaryAction={
-                                        <Chip label={getAcctNameByCode(t.acct)} />
-                                    }>
-                                        <ListItemAvatar>
-                                            {getAvatarParentBySnakeCase(
-                                                t.location.icon
-                                            )}
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            primary={
-                                                ((t.amount < 0) ? '-' : '+') + formatBalance(Math.abs(t.amount))
-                                            }
-                                            secondary={t.location.name  }
-                                        />
-                                    </ListItem>
-                                ))}
-                            </Paper>
-                        </Fade>
-                    ))}
+                    .filter((ts: Transaction[]) => ts.length != 0) // drop any possible empty subarrays
+                    .map(
+                        (
+                            ts: Transaction[] // render each array, ts, as a "day" with elements being transactions
+                        ) => (
+                            <motion.div
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{
+                                    default: { duration: 0.8 },
+                                    ease: 'easeOut',
+                                }}
+                                initial={{ y: 300, opacity: 0 }}
+                            >
+                                <TransctionCard transactions={ts} />
+                            </motion.div>
+                        )
+                    )}
             </List>
         </Grid>
     );

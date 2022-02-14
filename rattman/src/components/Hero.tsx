@@ -1,6 +1,6 @@
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { Slide } from 'react-reveal';
+import { motion } from 'framer-motion';
 
 import { formatBalance } from '../util/format';
 
@@ -15,7 +15,7 @@ const Hero = (props: HeroProps) => {
     return props.isLoading ? (
         <></>
     ) : (
-        <Slide bottom>
+        <motion.div animate={{ y: 0 }} initial={{ y: 200 }} transition={{ type: 'spring' }} >
             <Paper style={{ margin: '5% 10%', padding: '5%' }} elevation={6}>
                 <Typography variant="h2" component="h2">
                     {formatBalance(props.balance)}
@@ -24,7 +24,7 @@ const Hero = (props: HeroProps) => {
                     {props.acctName}
                 </Typography>
             </Paper>
-        </Slide>
+        </motion.div>
     );
 };
 
