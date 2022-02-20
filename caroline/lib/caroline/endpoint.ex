@@ -55,7 +55,12 @@ defmodule Caroline.Endpoint do
   end
 
   get "/aan/:skey/:aan" do
-    case Tigerspend.fetch(skey, aan) do
+    start_date = Map.get(conn.query_params, "o") # oldest date
+    end_date = Map.get(conn.query_params, "e") # earliest date
+
+    IO.inspect {start_date, end_date}
+
+    case Tigerspend.fetch(skey, {start_date, end_date}, aan) do
       {:ok, json} ->
         conn
         |> put_resp_content_type("application/json")
@@ -69,7 +74,11 @@ defmodule Caroline.Endpoint do
       {:error, :invalid_aan} ->
         conn
         |> put_resp_content_type("application/json")
-        |> send_resp(401, "Malformated aan number.\naan: " <> aan)
+        |> send_resp(400, "Malformated aan number.\naan: " <> aan)
+      
+      {:error, :invalid_date} ->
+        conn
+        |> send_resp(400, "Malformatted date.\nDates should be of the form: YYYY-MM-DD and shoud not be a date in the future")
 
       {:error, _} ->
         send_fatal_resp(conn, "request to tigerspend.rit.edu responded with a non-:ok status")
