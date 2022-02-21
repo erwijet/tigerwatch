@@ -4,7 +4,7 @@
     "private": true,
     "homepage": ".",
     "dependencies": {
-        "@emotion/styled": "^11.6.0",
+        "@emotion/styled": "^11.8.1",
         "@mui/icons-material": "^5.4.2",
         "@mui/material": "^5.4.3",
         "@tigerwatch/acct": "^1.0.1",
