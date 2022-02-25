@@ -16,7 +16,7 @@
         "react-router-dom": "^6.2.1",
         "web-vitals": "^2.1.4",
         "workbox-core": "^6.5.0",
-        "workbox-precaching": "^6.4.2"
+        "workbox-precaching": "^6.5.0"
     },
     "scripts": {
         "start": "react-scripts start",
