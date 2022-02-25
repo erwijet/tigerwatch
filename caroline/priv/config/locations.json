@@ -6,6 +6,12 @@
         "category": "admin_tasks"
     },
     {
+      "name": "Petals",
+      "regex": "RIT\\sInn\\sPetals.*",
+      "icon": "restaurant",
+      "category": "dining_hall"
+    },
+    {
         "name": "Midnight Oil",
         "regex": "Midnight\\sOil\\s.*",
         "icon": "local_cafe",

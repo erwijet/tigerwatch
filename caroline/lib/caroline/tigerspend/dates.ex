@@ -1,6 +1,6 @@
 defmodule Caroline.Tigerspend.Dates do
   # number of months of history to fetch from tigerspend.rit.edu 
-  @selection_size_months 6
+  @selection_size_months 12
 
   # tigerspend.rit.edu expects dates in the form of "yyyy-mm-dd"
   defp format_date(date) do
@@ -22,6 +22,21 @@ defmodule Caroline.Tigerspend.Dates do
   end
 
   def get_dates, do: {get_start_date(), get_end_date()}
+
+  # verify a date_str matches the format of "YYYY-MM-DD" and represents
+  # a date either in the present or past
+  def validate(date_str) when is_binary(date_str) do
+    try do
+      with [ year, month, day ] <- date_str |> to_string |> String.split("-") do
+        parse_date(month <> "/" <> day <> "/" <> year <> " 12:00PM")
+        |> DateTime.compare(DateTime.utc_now) == :lt
+      else
+        _ -> raise "invalid"
+      end
+    rescue 
+      e -> false
+    end
+  end
 
   # build a DateTime struct from a string in the format of "MM/DD/YYYY hh:mmXX"
   def parse_date(datetime_str) do
