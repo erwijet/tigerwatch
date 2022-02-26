@@ -55,10 +55,12 @@ defmodule Caroline.Endpoint do
   end
 
   get "/aan/:skey/:aan" do
-    start_date = Map.get(conn.query_params, "o") # oldest date
-    end_date = Map.get(conn.query_params, "e") # earliest date
+    # oldest date
+    start_date = Map.get(conn.query_params, "o")
+    # earliest date
+    end_date = Map.get(conn.query_params, "e")
 
-    IO.inspect {start_date, end_date}
+    IO.inspect({start_date, end_date})
 
     case Tigerspend.fetch(skey, {start_date, end_date}, aan) do
       {:ok, json} ->
@@ -75,10 +77,13 @@ defmodule Caroline.Endpoint do
         conn
         |> put_resp_content_type("application/json")
         |> send_resp(400, "Malformated aan number.\naan: " <> aan)
-      
+
       {:error, :invalid_date} ->
         conn
-        |> send_resp(400, "Malformatted date.\nDates should be of the form: YYYY-MM-DD and shoud not be a date in the future")
+        |> send_resp(
+          400,
+          "Malformatted date.\nDates should be of the form: YYYY-MM-DD and shoud not be a date in the future"
+        )
 
       {:error, _} ->
         send_fatal_resp(conn, "request to tigerspend.rit.edu responded with a non-:ok status")
@@ -117,11 +122,17 @@ defmodule Caroline.Endpoint do
   end
 
   match _ do
-    Caroline.Lyrics.get
-    |> (fn 
-        {:ok, lyrics} -> send_resp(conn, 404, "not found, but i'm still alive \n\n" <> lyrics)
-        _ -> send_fatal_resp(conn, "It's a 404 but we have bigger fish to fry-- we couldn't read the lyrics!")
-    end).()
+    Caroline.Lyrics.get()
+    |> (fn
+          {:ok, lyrics} ->
+            send_resp(conn, 404, "not found, but i'm still alive \n\n" <> lyrics)
+
+          _ ->
+            send_fatal_resp(
+              conn,
+              "It's a 404 but we have bigger fish to fry-- we couldn't read the lyrics!"
+            )
+        end).()
   end
 
   defp send_fatal_resp(conn, data) do
