@@ -11,11 +11,11 @@ export default async function syncSpendingData(
     setIsLoading(true);
     skey ||= '-';
 
-    const res = await fetch(`https://api.tigerwatch.app/aan/${skey}/-1`);
+    const res = await fetch(`${import.meta.env.VITE_DATA_AAN_ROUTE}${skey}/-1`);
 
     if (res.status === 401) {
         // redirect user to shib login
-        window.location.href = 'https://api.tigerwatch.app/auth';
+        window.location.href = import.meta.env.VITE_AUTH_ROUTE;
     } else {
         const rawData = await res.json();
         setSpendingData(
