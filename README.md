@@ -75,6 +75,10 @@ If the skey is blank or invalid, one will attempted to be generated and appended
 
 What this means is that if we can point that `wason` to a callback endpoint that we host, we can read and store the skey to make as many attempts as we want before the `skey` is expired, and we generate a new one again. The issue arises, however, the client will not be making a request to tigerspend in their browser, our server will be making the request. This raises the question of how will the user ever see the sign in page? This is how the flow of our server is constructed.
 
+### Data Snapshotting with skeys
+
+This is a bit of a weird quirk with the way that tigerspend.rit.edu is configured, but when an `skey` value is administered at the `/login.php` route of tigerspend, it has access to all the data created at that point in time. It does **not** have access to any data created *after* that point in time. What this means is that if you were to open up tigerwatch, login in, make a purchase, and then refresh tigerwatch, you would need a *new* `skey` value to view the new transaction. To get a new token, there is a "refresh" button that sends the user to caroline's `/auth` route which will generate a new skey for the user and, given that the `SHIBSESSION` is still intact, this should happen without the need of any interaction from the user.
+
 ### AAN?
 
 Throughout this project, you may see a reference to something called an `aan`. This stands for aggregate account number. It is as way that we can express a subset of accounts in one number. This is useful if you wish to query only certain accounts-- limiting the total reponse to only the relevant accounts can save massive bandwidth and  make sure we don't end up like `ondemand.rit.edu`.
