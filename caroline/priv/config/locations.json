@@ -116,7 +116,7 @@
     },
     {
         "name": "Food Truck",
-        "regex": "Campus\\Concessions\\s.*",
+        "regex": "Campus\\sConcessions\\s.*",
         "icon": "local_shipping",
         "category": "dining_hall"
     },
