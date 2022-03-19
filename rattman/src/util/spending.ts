@@ -1,9 +1,6 @@
 import type { Transaction, RawTransaction } from '@tigerwatch/types';
 import type { Dispatch, SetStateAction } from 'react';
 
-import { encodeAAN } from '@tigerwatch/aan';
-import { AccountCode } from '@tigerwatch/acct';
-
 type ReactStateSetter<T> = Dispatch<SetStateAction<T>>;
 
 export default async function syncSpendingData(
@@ -14,15 +11,11 @@ export default async function syncSpendingData(
     setIsLoading(true);
     skey ||= '-';
 
-    const res = await fetch(
-        `https://api.tigerwatch.app/aan/${skey}/${encodeAAN([
-            AccountCode.VOLUNTARY_DINING_DOLLARS,
-        ])}`
-    );
+    const res = await fetch(`${import.meta.env.VITE_DATA_AAN_ROUTE}${skey}/-1`);
 
     if (res.status === 401) {
         // redirect user to shib login
-        window.location.href = 'https://api.tigerwatch.app/auth';
+        window.location.href = import.meta.env.VITE_AUTH_ROUTE;
     } else {
         const rawData = await res.json();
         setSpendingData(

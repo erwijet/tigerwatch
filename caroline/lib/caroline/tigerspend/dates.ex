@@ -12,11 +12,13 @@ defmodule Caroline.Tigerspend.Dates do
 
   defp get_end_date do
     DateTime.utc_now()
+    |> DateTime.add(-5 * 60 * 60, :second)
     |> format_date
   end
 
   defp get_start_date do
     DateTime.utc_now()
+    |> DateTime.add(-5 * 60 * 60, :second)
     |> Date.add(-1 * 30 * @selection_size_months)
     |> format_date
   end
@@ -27,13 +29,13 @@ defmodule Caroline.Tigerspend.Dates do
   # a date either in the present or past
   def validate(date_str) when is_binary(date_str) do
     try do
-      with [ year, month, day ] <- date_str |> to_string |> String.split("-") do
-        parse_date(month <> "/" <> day <> "/" <> year <> " 12:00PM")
-        |> DateTime.compare(DateTime.utc_now) == :lt
+      with [year, month, day] <- date_str |> to_string |> String.split("-") do
+        parse_date(month <> "/" <> day <> "/" <> year <> " 00:01AM")
+        |> DateTime.compare(DateTime.utc_now()) == :lt
       else
         _ -> raise "invalid"
       end
-    rescue 
+    rescue
       e -> false
     end
   end

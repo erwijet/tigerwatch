@@ -11,8 +11,8 @@ defmodule Caroline.Application do
         plug: Caroline.Endpoint,
         options: [
           otp_app: :caroline,
-           certfile: "priv/certs/fullchain.pem",
-           keyfile: "priv/certs/privkey.pem"
+          certfile: "priv/certs/fullchain.pem",
+          keyfile: "priv/certs/privkey.pem"
         ]
       }
     ]
