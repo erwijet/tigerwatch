@@ -1,10 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 
-# there is no assertion that the script is currently running, so hide the error is the command fails
-_build/dev/rel/caroline/bin/caroline stop 2> /dev/null
+if ! command -v docker &> /dev/null; then
+  snap install docker
+fi
 
-mix deps.get
-mix format
-mix release --overwrite
+DOCKER_PROC=$(docker ps -f "ancestor=tigerwatch/caroline:latest" --format "{{.ID}}")
 
-_build/dev/rel/caroline/bin/caroline daemon
+if ! [ -z "$DOCKER_PROC" ]; then
+    docker kill "$DOCKER_PROC"
+    docker container rm "$DOCKER_PROC"
+fi
+
+docker build . -t tigerwatch/caroline:latest
+docker run -d --name tigerwatch-caroline --publish 443:443 tigerwatch/caroline
