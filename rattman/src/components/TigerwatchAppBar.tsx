@@ -134,18 +134,6 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
         </IconButton>
         <p>Refresh</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
@@ -195,15 +183,6 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit" onClick={props.handleRefresh}>
               <RefreshIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
             </IconButton>
             <IconButton
               size="large"

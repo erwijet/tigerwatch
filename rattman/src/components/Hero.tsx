@@ -15,7 +15,7 @@ const Hero = (props: HeroProps) => {
     return props.isLoading ? (
         <></>
     ) : (
-        <motion.div animate={{ y: 0 }} initial={{ y: 200 }} transition={{ type: 'spring' }} >
+        <motion.div animate={{ y: 0 }} initial={{ y: 200 }} transition={{ type: 'spring' }}>
             <Paper style={{ margin: '5% 10%', padding: '5%' }} elevation={6}>
                 <Typography variant="h2" component="h2">
                     {formatBalance(props.balance)}

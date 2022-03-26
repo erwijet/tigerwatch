@@ -8,6 +8,7 @@
         "@mui/icons-material": "^5.5.1",
         "@mui/material": "^5.5.1",
         "@tigerwatch/acct": "^1.0.1",
+        "framer-motion": "^6.2.8",
         "js-cookie": "^3.0.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",

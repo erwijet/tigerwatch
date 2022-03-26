@@ -9,22 +9,24 @@ import {
     Divider,
     Chip,
 } from '@mui/material';
-import {
-    Restaurant,
-    AttachMoney,
-    LocalCafe,
-    WineBar,
-    Icecream,
-    Fastfood,
-    ShoppingCart,
-    LocalShipping,
-    Cookie,
-    LunchDining,
-    RamenDining,
-} from '@mui/icons-material';
-import { animations, motion, useAnimation } from 'framer-motion';
+
+import Restaurant from '@mui/icons-material/Restaurant';
+import AttachMoney from '@mui/icons-material/AttachMoney';
+import LocalCafe from '@mui/icons-material/LocalCafe';
+import WineBar from '@mui/icons-material/WineBar';
+import Icecream from '@mui/icons-material/Icecream';
+import Fastfood from '@mui/icons-material/Fastfood';
+import ShoppingCart from '@mui/icons-material/ShoppingCart';
+import LocalShipping from '@mui/icons-material/LocalShipping';
+import Cookie from '@mui/icons-material/Cookie';
+import LunchDining from '@mui/icons-material/LunchDining';
+import RamenDining from '@mui/icons-material/RamenDining';
+
+import CirularProgress from '@mui/material/CircularProgress';
+
+import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { formatBalance } from '../util/format';
 import Spinner from './Spinner';
@@ -35,6 +37,7 @@ import { AccountCode } from '@tigerwatch/acct';
 type TransactionListProps = {
     data: Transaction[];
     isLoading: boolean;
+    initalLoadDone: boolean;
 };
 
 function getAvatarParentBySnakeCase(key: string): JSX.Element {
@@ -100,24 +103,24 @@ function getAcctNameByCode(code: number): string {
 function TransctionCard(props: { transactions: Transaction[] }): JSX.Element {
     const { transactions: ts } = props;
 
-    // const { ref, inView } = useInView();
     const anim = useAnimation();
+    const { ref, inView } = useInView();
 
     useEffect(() => {
-        // if (inView) {
-        //     anim.start({
-        //         y: 0,
-        //         opacity: 1,
-        //         transition: {
-        //             type: 'tween',
-        //             duration: 0.8
-        //         },
-        //     });
-        // } 
-    }, []);
+        if (inView) {
+            anim.start({
+                y: 0,
+                opacity: 1,
+                transition: {
+                    type: 'easing',
+                    duration: 0.6
+                },
+            });
+        }
+    }, [inView]);
 
     return (
-        <motion.div animate={{ y: 0, opacity: 1 }} initial={{ y: 200, opacity: 0 }}>
+        <motion.div animate={ anim } initial={{ y: 200, opacity: 0 }} ref={ref}>
             <Paper elevation={6} sx={{ m: 1 }}>
                 <ListItem>
                     <ListItemText
@@ -160,9 +163,7 @@ function TransctionCard(props: { transactions: Transaction[] }): JSX.Element {
 export default function TransactionList(
     props: TransactionListProps
 ): JSX.Element {
-    return props.isLoading ? (
-        <Spinner />
-    ) : (
+    return !props.initalLoadDone ? <Spinner /> : (
         <Grid container justifyContent="center">
             <List sx={{ width: '90%', minWidth: 200 }}>
                 {props.data
@@ -203,5 +204,5 @@ export default function TransactionList(
                     )}
             </List>
         </Grid>
-    );
+    )
 }

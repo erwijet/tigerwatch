@@ -11,7 +11,7 @@ import TigerwatchAppBar from './components/TigerwatchAppBar';
 import TransactionPage from './pages/TransactionPage';
 import SpendCardPage from './pages/SpendCardPage';
 
-import syncSpendingData, { refreshData } from './util/spending';
+import { refreshData, getChunk } from './util/spending';
 
 import type { Transaction } from '@tigerwatch/types';
 
@@ -32,18 +32,35 @@ function App() {
     const [spendingData, setSpendingData] = useState<Transaction[]>(
         [] as Transaction[]
     );
+
     const [isLoading, setIsLoading] = useState(true);
+    const [ noMoreChunks, setNoMoreChunks ] = useState(false);
+    const [chunkIndex, setChunkIndex] = useState(1);
 
     function handleRefresh() {
         refreshData(setIsLoading);
     }
 
-    useEffect(() => {
-        syncSpendingData(
+    function nextChunk() {
+        if (noMoreChunks) {
+            return;
+        }
+
+        setChunkIndex((n) => {
+            return ++n;
+        });
+
+        getChunk(
+            chunkIndex,
             Cookies.get('skey') ?? '',
-            setIsLoading,
-            setSpendingData
+            setSpendingData,
+            setNoMoreChunks,
+            setIsLoading
         );
+    }
+
+    useEffect(() => {
+        nextChunk(); // load first chunk
     }, []);
 
     return (
@@ -57,7 +74,7 @@ function App() {
                         <Route
                             element={
                                 <TransactionPage
-                                    {...{ isLoading, spendingData }}
+                                    {...{ isLoading, spendingData, nextChunk }}
                                 />
                             }
                             path="/"
