@@ -69,7 +69,7 @@ defmodule Caroline.Tigerspend.Dates do
       minute: min |> Integer.parse() |> elem(0),
       second: 0,
       microsecond: {0, 0},
-      utc_offset: -18000,
+      utc_offset: -14400,
       std_offset: 0,
       time_zone: "Eastern"
     }
