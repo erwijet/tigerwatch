@@ -8,5 +8,5 @@ COPY . /app
 RUN npm run build
 
 FROM docker.io/galenguyer/nginx:1.21.6-alpine3.15.0-spa
-COPY --from=build-deps /app/dist /usr/share/nginx/html/static
+COPY --from=build-deps /app/build /usr/share/nginx/html
 
