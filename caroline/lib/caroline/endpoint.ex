@@ -22,7 +22,7 @@ defmodule Caroline.Endpoint do
     conn
     |> put_resp_header(
       "location",
-      "https://tigerspend.rit.edu/login.php?wason=https://api.tigerwatch.app/dev/cb"
+      "https://tigerspend.rit.edu/login.php?wason=https://tigerwatch-api.csh.rit.edu/dev/cb"
     )
     |> send_resp(302, "")
   end
@@ -32,7 +32,7 @@ defmodule Caroline.Endpoint do
 
     unless skey == nil do
       conn
-      |> put_resp_header("location", "https://api.tigerwatch.app/data/" <> skey)
+      |> put_resp_header("location", "https://tigerwatch-api.csh.rit.edu/data/" <> skey)
       |> send_resp(302, "")
     else
       conn |> send_resp(400, "bad request")
@@ -94,7 +94,7 @@ defmodule Caroline.Endpoint do
     conn
     |> put_resp_header(
       "location",
-      "https://tigerspend.rit.edu/login.php?wason=https://api.tigerwatch.app/callback"
+      "https://tigerspend.rit.edu/login.php?wason=https://tigerwatch-api.csh.rit.edu/callback"
     )
     |> send_resp(302, "")
   end
@@ -113,8 +113,8 @@ defmodule Caroline.Endpoint do
 
     unless skey == nil do
       conn
-      |> put_resp_cookie("skey", skey, domain: ".tigerwatch.app", http_only: false)
-      |> put_resp_header("location", "https://tigerwatch.app")
+      |> put_resp_cookie("skey", skey, domain: ".csh.rit.edu", http_only: false)
+      |> put_resp_header("location", "https://tigerwatch.csh.rit.edu")
       |> send_resp(302, "")
     else
       conn |> send_resp(400, "bad request")
