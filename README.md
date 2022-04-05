@@ -8,6 +8,8 @@ An easy way for RIT students to track and monitor dining dollar spending
 
 **NOTE**: Users will need an RIT Computer account to access tigerwatch because it pulls data from RIT's tigerspend.rit.edu platform. 
 
+**Migration Notice**: The domain `tigerwatch.app` and `api.tigerwatch.app` are moving towards deprecation at this point in time. Please use `tigerwatch.csh.rit.edu` and `tigerwatch-api.csh.rit.edu` respectivly.
+
 ## Project Structure
 
 |Name|Description|
