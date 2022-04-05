@@ -7,7 +7,7 @@ defmodule Caroline.Application do
       {
         Plug.Cowboy,
         scheme: :http,
-        port: 2020,
+        port: 8080,
         plug: Caroline.Endpoint,
         options: [
           otp_app: :caroline,
