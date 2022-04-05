@@ -84,6 +84,10 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
     handleMenuClose();
   };
 
+  const handleGithubButtonClick = () => {
+    window.location.href = 'https://dev.tigerwatch.app';
+  };
+
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
@@ -107,6 +111,7 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
       className={'appbar'}
     >
       <MenuItem onClick={handleLogoutButtonClick}>Log Out</MenuItem>
+      <MenuItem onClick={handleGithubButtonClick}>Github</MenuItem>
     </Menu>
   );
 
