@@ -84,6 +84,10 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
     handleMenuClose();
   };
 
+  const handleGithubButtonClick = () => {
+    window.location.href = 'https://dev.tigerwatch.app';
+  };
+
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
@@ -106,8 +110,8 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
       onClose={handleMenuClose}
       className={'appbar'}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleLogoutButtonClick}>Log Out</MenuItem>
+      <MenuItem onClick={handleGithubButtonClick}>Github</MenuItem>
     </Menu>
   );
 
@@ -134,7 +138,7 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
         </IconButton>
         <p>Refresh</p>
       </MenuItem>
-      <MenuItem>
+      {/* <MenuItem>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
@@ -145,7 +149,7 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
           </Badge>
         </IconButton>
         <p>Notifications</p>
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
@@ -156,7 +160,6 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
       </MenuItem>
     </Menu>
   );
@@ -182,7 +185,7 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
           >
             TigerWatch
           </Typography>
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -190,13 +193,13 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
             />
-          </Search>
+          </Search> */}
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit" onClick={props.handleRefresh}>
               <RefreshIcon />
             </IconButton>
-            <IconButton
+            {/* <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
@@ -204,7 +207,7 @@ export default function PrimarySearchAppBar(props: { handleRefresh: () => void }
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
             <IconButton
               size="large"
               edge="end"
