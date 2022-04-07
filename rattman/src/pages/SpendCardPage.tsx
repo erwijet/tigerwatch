@@ -1,22 +1,14 @@
 import { Paper } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Cookies from 'js-cookie';
 import TigerwatchNavBar from '../components/TigerwatchNavBar';
 import Spinner from '../components/Spinner';
-
-import ReactGA from 'react-ga';
 
 function SpendCardPage() {
     // if skey is truly nil/invalid, user will be authed from app.tsx logic before this
     // page is rendered. This means that skey *should never* be "nil", but we safeguard here just in case
     const skey = Cookies.get('skey') || 'nil';
-
     const [isLoaded, setIsLoaded] = useState(false);
-
-    useEffect(() => {
-        ReactGA.pageview(window.location.href);
-    // eslint-disable-nextline
-    }, []);
 
     return (
         <>
