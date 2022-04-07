@@ -1,18 +1,11 @@
-import ReactGA from 'react-ga';
-import { useEffect } from 'react';
-import type { Transaction } from '@tigerwatch/types';
 import TigerwatchNavBar from '../components/TigerwatchNavBar';
 import TransactionTable from '../components/TransactionTable';
 import Hero from '../components/Hero';
 import { selectAndSum } from '../util/format';
 
+import type { Transaction } from '@tigerwatch/types';
+
 function TransactionPage(props: { spendingData: Transaction[], isLoading: boolean  }) {
-
-    useEffect(() => {
-        ReactGA.pageview(window.location.href);
-    // eslint-disable-nextline
-    }, []);
-
     return (
         <>
             <Hero
