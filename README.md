@@ -94,6 +94,20 @@ function encodeAAN(accts: number[]): number {
 }
 ```
 
+or, in elixir
+```elixir
+defmodule AAN do
+  use Bitwise
+  
+  @spec encodeAAN([1..32, ...]) :: non_neg_integer()
+  
+  def encodeAAN([]), do: 0
+  def encodeAAN([ acct | rest ]) do
+      (1 <<< acct) ||| encodeAAN(rest)
+  end
+end
+```
+
 This is just a very fancy way of saying that each `1` in the aan bitstring corresponds to an account we wish to select. For example, a theoretical aan requesting accounts 7, 2, and 4 would be expressed as: `1001010`. As long as each account falls below the number 32, this methodology will hold.
 
 Note, however, that in javascript `~0 == -1`. This is to say that the number `-1` represents a bitstring where each bit is `1`. As such, we use `-1` as something called a `VIRTUAL_ACCOUNT_SUM` constant, denoting that we wish to select *all* possible accounts available. When asked to encode `-1` as an account code into an AAN, the implemented encoding algorithm will simply return `-1` as the AAN. The same will happen in reverse we as to decode `-1`. The reasoning behind this is because RIT may introduce some new account with a new account number. This way that account is automatically included in the request, instead of having to use a different AAN.
