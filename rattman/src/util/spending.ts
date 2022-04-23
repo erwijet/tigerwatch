@@ -47,5 +47,5 @@ export default async function syncSpendingData(
  */
 export function refreshData(setIsLoading: ReactStateSetter<boolean>) {
     setIsLoading(true);
-    window.location.href = 'https://api.tigerwatch.app/auth'; // will autoshib if session exists, otherwise user will do shib auth
+    window.location.href = import.meta.env.VITE_AUTH_ROUTE; // will autoshib if session exists, otherwise user will do shib auth
 }

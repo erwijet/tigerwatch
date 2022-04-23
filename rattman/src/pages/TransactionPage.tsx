@@ -11,7 +11,7 @@ function TransactionPage(props: { spendingData: Transaction[], isLoading: boolea
             <Hero
                 isLoading={props.isLoading}
                 balance={selectAndSum(props.spendingData, -1)}
-                acctName={"Dining Dollars"}
+                acctName={"Total RIT Funds"}
             />
             <TransactionTable data={props.spendingData} isLoading={props.isLoading} />
             <TigerwatchNavBar />
