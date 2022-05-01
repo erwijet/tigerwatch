@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 import TigerwatchAppBar from './components/TigerwatchAppBar';
+import TigerwatchNavBar from './components/TigerwatchNavBar';
 import TransactionPage from './pages/TransactionPage';
 import SpendCardPage from './pages/SpendCardPage';
 
@@ -61,6 +62,7 @@ function App() {
                         />
                         <Route element={<SpendCardPage />} path="/spendcard" />
                     </Routes>
+                    {!isLoading && <TigerwatchNavBar />}
                 </BrowserRouter>
             </div>
         </ThemeProvider>

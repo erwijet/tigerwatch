@@ -1,7 +1,6 @@
 import { Paper } from '@mui/material';
 import { useState } from 'react';
 import Cookies from 'js-cookie';
-import TigerwatchNavBar from '../components/TigerwatchNavBar';
 import Spinner from '../components/Spinner';
 
 function SpendCardPage() {
@@ -36,7 +35,6 @@ function SpendCardPage() {
                     />
                 </Paper>
             </div>
-            <TigerwatchNavBar />
         </>
     );
 }

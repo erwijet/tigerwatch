@@ -1,4 +1,3 @@
-import TigerwatchNavBar from '../components/TigerwatchNavBar';
 import TransactionTable from '../components/TransactionTable';
 import Hero from '../components/Hero';
 import { selectAndSum } from '../util/format';
@@ -14,7 +13,6 @@ function TransactionPage(props: { spendingData: Transaction[], isLoading: boolea
                 acctName={"Total RIT Funds"}
             />
             <TransactionTable data={props.spendingData} isLoading={props.isLoading} />
-            <TigerwatchNavBar />
         </>
     );
 }
