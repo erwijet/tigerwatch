@@ -16,7 +16,7 @@
         "react-router-dom": "^6.3.0",
         "web-vitals": "^2.1.4",
         "workbox-core": "^6.5.2",
-        "workbox-precaching": "^6.5.2"
+        "workbox-precaching": "^6.5.3"
     },
     "scripts": {
         "start": "vite --mode staging --host 0.0.0.0",
