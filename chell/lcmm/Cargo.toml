@@ -4,4 +4,4 @@ name = "lcmm"
 version = "0.1.0"
 
 [dependencies]
-rocket = "0.4.10"
+rocket = "0.4.11"
