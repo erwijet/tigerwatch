@@ -6,7 +6,7 @@ defmodule Caroline.Tigerspend.AAN do
   def get_acct_decls,
     do: [
       {:tiger_bucks, 1},
-      {:standard_dining_dollars, 4},
+      {:standard_dining_dollars, 55},
       {:voluntary_dining_dollars, 24},
       {:rollover_dining_dollars, 29}
     ]
