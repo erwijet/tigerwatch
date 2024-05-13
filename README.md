@@ -1,14 +1,28 @@
+# Archived
+```
+The powers that be have updated their auth flow
+where the &wason= url parameter is now no longer used.
+This was central to the functionality of tigerwatch.
+As such, this project is now non-functional and archived :((
 
+Thank you to all the people who used and got excited about
+this project. Your motivation made this project such a joy
+to develop and maintain. Ya'll are the best.
+
+All my love,
+Tyler
+```
+
+---
 
 # TigerWatch
-
-[![Netlify Status](https://api.netlify.com/api/v1/badges/c5558385-9418-4ee3-8a0f-aa65e4083869/deploy-status)](https://app.netlify.com/sites/distracted-pare-04fe9c/deploys)
 
 An easy way for RIT students to track and monitor dining dollar spending
 
 **NOTE**: Users will need an RIT Computer account to access tigerwatch because it pulls data from RIT's tigerspend.rit.edu platform. 
 
-**Migration Notice**: The domain `tigerwatch.app` and `api.tigerwatch.app` are moving towards deprecation at this point in time. Please use `tigerwatch.csh.rit.edu` and `tigerwatch-api.csh.rit.edu` respectivly.
+**Migration Notice**: The domain `tigerwatch.app` and `api.tigerwatch.app` are deprecated at this point in time. 
+Please use `tigerwatch.csh.rit.edu` and `tigerwatch-api.csh.rit.edu` respectivly.
 
 ## Project Structure
 
